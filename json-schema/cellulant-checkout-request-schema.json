@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/cellulant/refs/heads/main/json-schema/cellulant-checkout-request-schema.json",
+  "title": "Tingg Express Checkout Request",
+  "description": "Payload submitted to /v3/checkout-api/checkout-request/express-request to create a hosted checkout session.",
+  "type": "object",
+  "required": [
+    "merchant_transaction_id",
+    "service_code",
+    "country_code",
+    "currency_code",
+    "request_amount",
+    "callback_url"
+  ],
+  "properties": {
+    "merchant_transaction_id": {
+      "type": "string",
+      "description": "Unique merchant-generated transaction identifier."
+    },
+    "service_code": {
+      "type": "string",
+      "description": "Tingg service code identifying the merchant's product line."
+    },
+    "country_code": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2 country code (KE, UG, TZ, NG, GH, ...)."
+    },
+    "currency_code": {
+      "type": "string",
+      "description": "ISO 4217 currency code."
+    },
+    "request_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "request_description": { "type": "string" },
+    "account_number": { "type": "string" },
+    "msisdn": {
+      "type": "string",
+      "description": "E.164 phone number, no leading + or 00."
+    },
+    "customer_first_name": { "type": "string" },
+    "customer_last_name": { "type": "string" },
+    "customer_email": { "type": "string", "format": "email" },
+    "due_date": { "type": "string", "format": "date-time" },
+    "callback_url": { "type": "string", "format": "uri" },
+    "success_redirect_url": { "type": "string", "format": "uri" },
+    "fail_redirect_url": { "type": "string", "format": "uri" },
+    "payment_option_code": { "type": "string" },
+    "language_code": { "type": "string", "default": "en" }
+  },
+  "additionalProperties": false
+}

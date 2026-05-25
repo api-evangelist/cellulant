@@ -1,0 +1,48 @@
+extends:
+  - spectral:oas
+rules:
+  cellulant-operation-summary-title-case:
+    description: Operation summaries must use Title Case and start with the Cellulant brand verb pattern.
+    severity: warn
+    given: $.paths.*.*.summary
+    then:
+      function: pattern
+      functionOptions:
+        match: '^([A-Z][a-z0-9]*)( [A-Z][a-z0-9]*)+$|^Cellulant '
+  cellulant-operationid-camelcase:
+    description: operationId must be lowerCamelCase.
+    severity: warn
+    given: $.paths.*.*.operationId
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9]+$'
+  cellulant-https-only:
+    description: All servers must use HTTPS.
+    severity: error
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: '^https://'
+  cellulant-tingg-host:
+    description: Production server URL must use the tingg.africa domain.
+    severity: warn
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: 'tingg\.africa'
+  cellulant-error-schema:
+    description: Every operation should reference a 4XX error response component.
+    severity: warn
+    given: $.paths.*[get,post,put,delete,patch].responses
+    then:
+      field: 4XX
+      function: truthy
+  cellulant-currency-code-iso4217:
+    description: currency_code fields should be 3-letter ISO 4217 codes.
+    severity: hint
+    given: $..[?(@property === 'currency_code' || @property === 'currencyCode')]^
+    then:
+      function: truthy

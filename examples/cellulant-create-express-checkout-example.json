@@ -1,0 +1,38 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.tingg.africa/v3/checkout-api/checkout-request/express-request",
+    "headers": {
+      "apikey": "tg_live_abc1234567",
+      "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "merchant_transaction_id": "MX-2026-05-24-0001",
+      "service_code": "TINGGSVC001",
+      "country_code": "KE",
+      "currency_code": "KES",
+      "request_amount": 1500,
+      "request_description": "Order #42 — Premium subscription",
+      "account_number": "ACC-42",
+      "msisdn": "254712345678",
+      "customer_first_name": "Wanjiru",
+      "customer_last_name": "Mwangi",
+      "customer_email": "wanjiru@example.co.ke",
+      "callback_url": "https://merchant.example.co.ke/tingg/ipn",
+      "success_redirect_url": "https://merchant.example.co.ke/checkout/success",
+      "fail_redirect_url": "https://merchant.example.co.ke/checkout/failed",
+      "language_code": "en"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "status_code": 200,
+      "status_description": "Successful",
+      "checkout_request_id": "99887766",
+      "short_url": "https://online.tingg.africa/checkout/Abc12",
+      "long_url": "https://online.tingg.africa/checkout/express?accessKey=abcdef1234567890..."
+    }
+  }
+}

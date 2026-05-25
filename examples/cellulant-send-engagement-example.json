@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.tingg.africa/api/v2/engagement",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "notificationType": "OTP",
+      "channels": ["SMS"],
+      "referenceID": "ref-cas-123",
+      "callbackUrl": "https://merchant.example.co.ke/sms/callback",
+      "smsDto": {
+        "msisdn": ["254712345678"],
+        "message": "Your Tingg OTP is ${code}. Valid for 5 minutes.",
+        "params": { "code": "648291" },
+        "senderID": "TINGG"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "transactionID": "8f6b2c80-43f7-4f78-b1d2-7a3a5d6c1e0a",
+      "statusCode": 200,
+      "message": "Message queued successfully."
+    }
+  }
+}

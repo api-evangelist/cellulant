@@ -1,0 +1,81 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cellulant Tingg Engage API — Engagement
+  description: 'Cellulant Tingg Engage API — Engagement. One operation for queuing SMS notifications (OTP, transactional, standard) with templated parameters and delivery callbacks.'
+  tags:
+  - Cellulant
+  - Tingg
+  - Engage
+  - SMS
+  - Notifications
+  created: '2026-05-24'
+  modified: '2026-05-24'
+binds:
+- namespace: env
+  keys:
+    TINGG_ACCESS_TOKEN: TINGG_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: engage-engagement
+    baseUri: https://api.tingg.africa
+    description: Cellulant Tingg Engage SMS engagement capability.
+    resources:
+    - name: engagement
+      path: /api/v2/engagement
+      operations:
+      - name: sendengagement
+        method: POST
+        description: Cellulant Send Engagement Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.TINGG_ACCESS_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: engage-engagement-rest
+    port: 8080
+    description: REST adapter for Cellulant Tingg Engage.
+    resources:
+    - path: /api/v2/engagement
+      name: engagement
+      description: REST surface for engagement.
+      operations:
+      - method: POST
+        name: sendengagement
+        description: Cellulant Send Engagement Message
+        call: engage-engagement.sendengagement
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: engage-engagement-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cellulant Tingg Engage.
+    tools:
+    - name: cellulant-send-engagement
+      description: Cellulant Send Engagement Message (SMS / OTP)
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engage-engagement.sendengagement
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

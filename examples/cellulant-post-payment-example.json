@@ -1,0 +1,54 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.tingg.africa/v1/global-api/payments",
+    "headers": {
+      "Authorization": "Basic c2FuZGJveHVzZXI6c2FuZGJveHBhc3N3b3JkIQ==",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "function": "BEEP.postPayment",
+      "countryCode": "KE",
+      "payload": {
+        "credentials": {
+          "username": "sandboxuser",
+          "password": "sandboxpassword!"
+        },
+        "packet": {
+          "serviceCode": "MPESA-B2C",
+          "MSISDN": "254712345678",
+          "accountNumber": "254712345678",
+          "payerTransactionID": "TXN-2026-05-24-0001",
+          "amount": 2500,
+          "datePaymentReceived": "2026-05-24 10:15:00",
+          "currencyCode": "KE",
+          "countryCode": "KE",
+          "narration": "Vendor payout — May invoice",
+          "paymentMode": "Mobile",
+          "customerNames": "Wanjiru Mwangi",
+          "extraData": {
+            "callbackUrl": "https://merchant.example.co.ke/tingg/payout-callback",
+            "pushToOriginator": true
+          }
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "authStatus": {
+        "authStatusCode": 131,
+        "authStatusDescription": "Authentication was successful"
+      },
+      "results": [
+        {
+          "statusCode": 139,
+          "statusDescription": "Payment pending acknowledgement",
+          "payerTransactionID": "TXN-2026-05-24-0001",
+          "beepTransactionID": 9876543210
+        }
+      ]
+    }
+  }
+}

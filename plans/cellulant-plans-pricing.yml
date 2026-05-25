@@ -1,0 +1,97 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Cellulant
+providerId: cellulant
+created: '2026-05-24'
+modified: '2026-05-24'
+reconciled: false
+tags:
+  - Payments
+  - Mobile Money
+  - Checkout
+  - Payouts
+  - Africa
+description: |
+  Cellulant Tingg pricing is not published as a public rate card. Fees are
+  negotiated per-merchant by country, payment rail (mobile money / bank /
+  card), and merchant category. The structure below captures the commercially
+  visible plan shape; concrete per-transaction percentages must be obtained
+  from a Tingg sales contract.
+sources:
+  - https://tingg.africa/pricing/
+  - https://tingg.africa/checkout/
+  - https://tingg.africa/payouts/
+plans:
+  - id: cellulant-tingg-checkout
+    name: Tingg Checkout
+    type: usage-based
+    description: |
+      Pay-as-you-go merchant acquiring across 25+ African markets. Fees are
+      negotiated and vary by country, rail, and merchant category. Mobile
+      money, cards, and direct bank transfer rails priced independently.
+    entries:
+      - label: Per successful transaction
+        name: txn_fee
+        type: metered
+        metric: transaction
+        limit: -1
+        timeFrame: usage
+        geo: africa
+        unit: 1
+        price: 'Contract'
+        userMultiplied: false
+    elements:
+      - name: 283+ payment methods (mobile money, cards, bank)
+      - name: 25+ countries collection coverage
+      - name: Hosted Express Checkout (short_url / long_url / modal)
+      - name: Host-to-host Custom Checkout API
+      - name: Direct Card API with 3DS and 3DS-less flows
+      - name: Dedicated Virtual Account (Nigeria)
+      - name: WordPress/WooCommerce plugin
+      - name: SDKs: PHP, Python, Node.js, .NET, JavaScript
+  - id: cellulant-tingg-payouts
+    name: Tingg Payouts
+    type: usage-based
+    description: |
+      Bulk and on-demand disbursement to mobile money, banks, airtime, and
+      data bundles across 35+ African countries. Float-funded; fees per
+      payout vary by destination rail and country.
+    entries:
+      - label: Per payout transaction
+        name: payout_fee
+        type: metered
+        metric: transaction
+        limit: -1
+        timeFrame: usage
+        geo: africa
+        unit: 1
+        price: 'Contract'
+        userMultiplied: false
+    elements:
+      - name: 35 country payout coverage
+      - name: Mobile money B2C
+      - name: Bulk disbursement
+      - name: Cross-border bank transfers
+      - name: Airtime and data bundle vending
+      - name: Bill payments (DSTV, GOTV, utilities)
+      - name: Asynchronous callbacks on delivery
+  - id: cellulant-tingg-engage
+    name: Tingg Engage
+    type: usage-based
+    description: SMS engagement (OTP, transactional, standard) priced per message; rate varies by destination network.
+    entries:
+      - label: Per SMS
+        name: sms_fee
+        type: metered
+        metric: message
+        limit: -1
+        timeFrame: usage
+        geo: africa
+        unit: 1
+        price: 'Contract'
+        userMultiplied: false
+    elements:
+      - name: OTP, transactional, and standard SMS classes
+      - name: Templated body with ${placeholder} parameters
+      - name: Per-message delivery callbacks

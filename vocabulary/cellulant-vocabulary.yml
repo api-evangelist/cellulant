@@ -1,0 +1,76 @@
+vocabulary: Cellulant Tingg
+version: '0.1'
+provider: Cellulant
+providerId: cellulant
+created: '2026-05-24'
+modified: '2026-05-24'
+description: |
+  Operational and capability vocabulary for the Cellulant Tingg payments
+  platform — payment rails, transaction lifecycle states, geographic
+  coverage, and product surfaces.
+domains:
+  - name: Payment Rails
+    terms:
+      - MobileMoney
+      - DirectBankTransfer
+      - CardPayment
+      - Airtime
+      - DataBundle
+      - BillPayment
+      - VirtualAccount
+  - name: Geographies
+    terms:
+      - Kenya
+      - Uganda
+      - Tanzania
+      - Rwanda
+      - Nigeria
+      - Ghana
+      - Cote d'Ivoire
+      - Senegal
+      - Zambia
+      - Malawi
+      - Zimbabwe
+      - Mozambique
+      - South Africa
+      - Egypt
+      - Cameroon
+      - Botswana
+  - name: Checkout Surfaces
+    terms:
+      - ExpressCheckout
+      - CustomCheckout
+      - DirectCardAPI
+      - CheckoutModal
+      - CheckoutRedirect
+      - PaymentLink
+  - name: Payout Surfaces
+    terms:
+      - PostPayment
+      - QueryPayment
+      - ValidateAccount
+      - GetBill
+      - GetBalance
+      - RefundPayment
+  - name: Engagement Surfaces
+    terms:
+      - OTP
+      - TransactionalSMS
+      - StandardSMS
+  - name: Transaction Lifecycle
+    terms:
+      - CheckoutInitiated
+      - ChargeRequested
+      - PendingAcknowledgement
+      - Acknowledged
+      - Settled
+      - Refunded
+      - Rejected
+      - DeferredAcknowledgement
+  - name: Status Codes
+    terms:
+      - 183 — Successful
+      - 180 — Rejected
+      - 188 — Received, ack later
+      - 139 — Payment pending acknowledgement
+      - 131 — Authentication successful

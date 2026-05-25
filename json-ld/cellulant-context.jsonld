@@ -1,0 +1,52 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "tingg": "https://api.tingg.africa/v3/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "CheckoutRequest": {
+      "@id": "tingg:CheckoutRequest",
+      "@context": {
+        "merchant_transaction_id": { "@id": "tingg:CheckoutRequest/merchantTransactionId", "@type": "xsd:string" },
+        "service_code": { "@id": "tingg:CheckoutRequest/serviceCode", "@type": "xsd:string" },
+        "country_code": { "@id": "tingg:CheckoutRequest/countryCode", "@type": "xsd:string" },
+        "currency_code": { "@id": "tingg:CheckoutRequest/currencyCode", "@type": "xsd:string" },
+        "request_amount": { "@id": "tingg:CheckoutRequest/amount", "@type": "xsd:decimal" },
+        "msisdn": { "@id": "tingg:CheckoutRequest/msisdn", "@type": "xsd:string" },
+        "callback_url": { "@id": "tingg:CheckoutRequest/callbackUrl", "@type": "xsd:anyURI" }
+      }
+    },
+    "CheckoutResponse": {
+      "@id": "tingg:CheckoutResponse",
+      "@context": {
+        "checkout_request_id": { "@id": "tingg:CheckoutResponse/id", "@type": "xsd:string" },
+        "short_url": { "@id": "tingg:CheckoutResponse/shortUrl", "@type": "xsd:anyURI" },
+        "long_url": { "@id": "tingg:CheckoutResponse/longUrl", "@type": "xsd:anyURI" },
+        "status_code": { "@id": "tingg:CheckoutResponse/statusCode", "@type": "xsd:integer" }
+      }
+    },
+    "PayoutPacket": {
+      "@id": "tingg:PayoutPacket",
+      "@context": {
+        "serviceCode": { "@id": "tingg:PayoutPacket/serviceCode", "@type": "xsd:string" },
+        "MSISDN": { "@id": "tingg:PayoutPacket/msisdn", "@type": "xsd:string" },
+        "accountNumber": { "@id": "tingg:PayoutPacket/accountNumber", "@type": "xsd:string" },
+        "amount": { "@id": "tingg:PayoutPacket/amount", "@type": "xsd:decimal" },
+        "currencyCode": { "@id": "tingg:PayoutPacket/currencyCode", "@type": "xsd:string" },
+        "countryCode": { "@id": "tingg:PayoutPacket/countryCode", "@type": "xsd:string" },
+        "paymentMode": { "@id": "tingg:PayoutPacket/paymentMode", "@type": "xsd:string" }
+      }
+    },
+    "EngagementMessage": {
+      "@id": "tingg:EngagementMessage",
+      "@context": {
+        "notificationType": { "@id": "tingg:EngagementMessage/notificationType", "@type": "xsd:string" },
+        "referenceID": { "@id": "tingg:EngagementMessage/referenceId", "@type": "xsd:string" },
+        "msisdn": { "@id": "tingg:EngagementMessage/recipients", "@container": "@list" },
+        "message": { "@id": "tingg:EngagementMessage/body", "@type": "xsd:string" }
+      }
+    }
+  }
+}

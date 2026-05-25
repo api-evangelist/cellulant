@@ -1,0 +1,283 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cellulant Tingg Checkout API — Checkout
+  description: 'Cellulant Tingg Checkout API — Checkout. 6 operations covering OAuth token issuance, Express and Custom checkout creation, charge initiation, status query, and acknowledgement. Self-contained Naftiko capability covering the Tingg Checkout business surface.'
+  tags:
+  - Cellulant
+  - Tingg
+  - Checkout
+  - Payments
+  created: '2026-05-24'
+  modified: '2026-05-24'
+binds:
+- namespace: env
+  keys:
+    TINGG_API_KEY: TINGG_API_KEY
+    TINGG_CLIENT_ID: TINGG_CLIENT_ID
+    TINGG_CLIENT_SECRET: TINGG_CLIENT_SECRET
+    TINGG_ACCESS_TOKEN: TINGG_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: checkout-checkout
+    baseUri: https://api.tingg.africa
+    description: Cellulant Tingg Checkout API — Checkout business capability. Self-contained, no shared references.
+    resources:
+    - name: oauth-token
+      path: /v1/oauth/token/request
+      operations:
+      - name: requestaccesstoken
+        method: POST
+        description: Cellulant Request OAuth Access Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: express-request
+      path: /v3/checkout-api/checkout-request/express-request
+      operations:
+      - name: createexpresscheckout
+        method: POST
+        description: Cellulant Create Express Checkout Request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: custom-request
+      path: /v3/checkout-api/checkout-request/custom-request
+      operations:
+      - name: initiatecustomcheckout
+        method: POST
+        description: Cellulant Initiate Custom Checkout Request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: charge
+      path: /v3/checkout-api/checkout-request/charge
+      operations:
+      - name: initiatecharge
+        method: POST
+        description: Cellulant Initiate Charge Request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: query-status
+      path: /v3/checkout-api/query-status
+      operations:
+      - name: querystatus
+        method: GET
+        description: Cellulant Query Request Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: acknowledgement
+      path: /v3/checkout-api/acknowledgement/request
+      operations:
+      - name: acknowledgepayment
+        method: POST
+        description: Cellulant Acknowledge Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.TINGG_ACCESS_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: checkout-checkout-rest
+    port: 8080
+    description: REST adapter for Cellulant Tingg Checkout API.
+    resources:
+    - path: /v1/oauth/token/request
+      name: oauth-token
+      description: REST surface for OAuth token issuance.
+      operations:
+      - method: POST
+        name: requestaccesstoken
+        description: Cellulant Request OAuth Access Token
+        call: checkout-checkout.requestaccesstoken
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v3/checkout-api/checkout-request/express-request
+      name: express-request
+      description: REST surface for express checkout.
+      operations:
+      - method: POST
+        name: createexpresscheckout
+        description: Cellulant Create Express Checkout Request
+        call: checkout-checkout.createexpresscheckout
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v3/checkout-api/checkout-request/custom-request
+      name: custom-request
+      description: REST surface for custom checkout.
+      operations:
+      - method: POST
+        name: initiatecustomcheckout
+        description: Cellulant Initiate Custom Checkout Request
+        call: checkout-checkout.initiatecustomcheckout
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v3/checkout-api/checkout-request/charge
+      name: charge
+      description: REST surface for charge initiation.
+      operations:
+      - method: POST
+        name: initiatecharge
+        description: Cellulant Initiate Charge Request
+        call: checkout-checkout.initiatecharge
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v3/checkout-api/query-status
+      name: query-status
+      description: REST surface for status queries.
+      operations:
+      - method: GET
+        name: querystatus
+        description: Cellulant Query Request Status
+        call: checkout-checkout.querystatus
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v3/checkout-api/acknowledgement/request
+      name: acknowledgement
+      description: REST surface for acknowledgements.
+      operations:
+      - method: POST
+        name: acknowledgepayment
+        description: Cellulant Acknowledge Payment
+        call: checkout-checkout.acknowledgepayment
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: checkout-checkout-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cellulant Tingg Checkout API.
+    tools:
+    - name: cellulant-request-access-token
+      description: Cellulant Request OAuth Access Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: checkout-checkout.requestaccesstoken
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cellulant-create-express-checkout
+      description: Cellulant Create Express Checkout Request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: checkout-checkout.createexpresscheckout
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cellulant-initiate-custom-checkout
+      description: Cellulant Initiate Custom Checkout Request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: checkout-checkout.initiatecustomcheckout
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cellulant-initiate-charge
+      description: Cellulant Initiate Charge Request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: checkout-checkout.initiatecharge
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cellulant-query-status
+      description: Cellulant Query Request Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: checkout-checkout.querystatus
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cellulant-acknowledge-payment
+      description: Cellulant Acknowledge Payment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: checkout-checkout.acknowledgepayment
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

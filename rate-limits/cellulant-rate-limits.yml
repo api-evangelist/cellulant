@@ -1,0 +1,43 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Cellulant
+providerId: cellulant
+created: '2026-05-24'
+modified: '2026-05-24'
+reconciled: false
+tags:
+  - Rate Limiting
+  - Payments
+  - Throttling
+description: |
+  Cellulant Tingg does not publish a numeric public rate limit. Throttling is
+  applied at the merchant and service-code level and is tunable in the Tingg
+  integration dashboard. Sandbox accounts (api-approval.tingg.africa) are
+  rate-limited more aggressively than production. Asynchronous callbacks and
+  5xx-retry guidance govern correct client behavior.
+sources:
+  - https://docs.tingg.africa/reference/postpayment
+  - https://docs.tingg.africa/docs/payouts-get-started
+  - https://docs.tingg.africa/docs/checkout-v3-getting-started
+responseCodes:
+  throttled: 429
+  serverError: 500
+algorithm: per-merchant policy
+guidance:
+  - For 5xx server errors on the Payouts (Beep) API, do NOT immediately retry or mark the transaction failed. Issue a BEEP.queryPayment first; only retry once status confirms the prior request was not accepted.
+  - Express checkout callbacks must be acknowledged with status_code 183 (success), 180 (rejected), or 188 (received, ack later) — any other response is treated as undelivered and re-queued.
+  - Payouts API is asynchronous; statusCode 139 ("Payment pending acknowledgement") triggers a callback to the configured callback URL only when `pushToOriginator` is true.
+limits:
+  - tier: Sandbox
+    surface: All APIs
+    note: Lower per-second cap; intended for integration testing.
+  - tier: Production
+    surface: Checkout API
+    note: Per-merchant cap set by Cellulant ops; raise via support request.
+  - tier: Production
+    surface: Payouts (Beep) API
+    note: Throughput governed by funded float balance and per-service-code cap.
+  - tier: Production
+    surface: Engage SMS API
+    note: Burst protection per sender ID; long-code vs short-code dependent.

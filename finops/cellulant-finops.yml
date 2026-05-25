@@ -1,0 +1,84 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Cellulant
+providerId: cellulant
+created: '2026-05-24'
+modified: '2026-05-24'
+reconciled: false
+tags:
+  - FinOps
+  - FOCUS
+  - Payments
+  - Africa
+description: |
+  FOCUS-aligned FinOps definition for Cellulant Tingg. Cellulant is a payments
+  acquirer/disburser — its primary cost surface is per-transaction interchange
+  plus rail fees pass-through, not infrastructure consumption. Fees vary by
+  country, rail, and merchant contract and are not published as a list price.
+sources:
+  - https://tingg.africa/pricing/
+  - https://www.cellulant.io/our-payments-gateway/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Cellulant
+serviceCategory: Financial Services — Payments
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: Multi (local settlement)
+  chargeCategories:
+    - Usage
+    - Tax
+    - Adjustment
+    - Refund
+  primaryUnit: transaction
+  secondaryUnits:
+    - message
+    - account_validation
+meters:
+  - name: checkout_transaction
+    unit: transaction
+    aggregation: sum
+    dimensions:
+      - country_code
+      - currency_code
+      - service_code
+      - payment_mode
+  - name: payout_transaction
+    unit: transaction
+    aggregation: sum
+    dimensions:
+      - country_code
+      - currency_code
+      - service_code
+      - payment_mode
+  - name: refund_transaction
+    unit: transaction
+    aggregation: sum
+    dimensions:
+      - country_code
+      - service_code
+  - name: engagement_message
+    unit: message
+    aggregation: sum
+    dimensions:
+      - country_code
+      - notification_type
+focusColumns:
+  ServiceName: Tingg
+  ServiceCategory: Financial Services — Payments
+  ProviderName: Cellulant
+  PublisherName: Cellulant
+  InvoiceIssuerName: Cellulant (per market entity)
+  PricingCategory: Usage-Based
+  PricingUnit: transaction
+  BillingCurrency: Local market currency
+notes:
+  - Float prefunding is required for payouts; balance is itself a financial-position line, not a FOCUS Charge.
+  - Cross-border payouts incur an additional FX margin not captured in the per-transaction fee.
+  - Acknowledgement status drives invoice eligibility — only acknowledged checkout transactions are billed.

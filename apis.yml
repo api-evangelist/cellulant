@@ -1,0 +1,234 @@
+aid: cellulant
+name: Cellulant
+description: >-
+  Cellulant is a pan-African payments platform headquartered in Nairobi, Kenya,
+  operating across 35 African countries. Its flagship product Tingg is a single
+  API that lets businesses collect online and offline payments, disburse to
+  mobile money wallets and bank accounts, vend airtime and data, pay bills,
+  and engage customers by SMS — interoperably across 350+ banks, mobile
+  network operators, and card networks. Cellulant processes more than 4.5
+  million transactions per day for over 2,000 enterprise merchants and powers
+  payments for ~220 million consumers. The Tingg platform exposes three
+  primary developer-facing surfaces: Tingg Checkout 3.0 (Express, Custom and
+  Direct Card), Tingg Payouts (the Beep global JSON endpoint), and Tingg
+  Engage (transactional SMS). Cellulant ships official SDKs for PHP, Python,
+  Node.js, .NET, JavaScript, plus a WooCommerce plugin.
+type: Index
+position: Provider
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Payments
+  - Mobile Money
+  - Checkout
+  - Payouts
+  - Disbursement
+  - Africa
+  - Pan-African
+  - Fintech
+  - Bank Transfer
+  - Cards
+  - Airtime
+  - Bill Payment
+  - SMS
+  - OTP
+  - Tingg
+url: https://raw.githubusercontent.com/api-evangelist/cellulant/refs/heads/main/apis.yml
+created: '2026-05-24'
+modified: '2026-05-24'
+specificationVersion: '0.20'
+apis:
+  - aid: cellulant:cellulant-tingg-checkout-api
+    name: Cellulant Tingg Checkout API
+    tags:
+      - Payments
+      - Checkout
+      - Mobile Money
+      - Cards
+      - Bank Transfer
+      - Africa
+    humanURL: https://docs.tingg.africa/docs/introduction
+    properties:
+      - url: https://docs.tingg.africa/docs/introduction
+        type: Documentation
+      - url: https://docs.tingg.africa/docs/checkout-v3-express-checkout
+        type: Documentation
+      - url: https://docs.tingg.africa/docs/checkout-v3-custom-checkout
+        type: Documentation
+      - url: https://docs.tingg.africa/docs/checkout-v3-direct-card
+        type: Documentation
+      - url: https://docs.tingg.africa/reference/acknowledge-payments
+        type: Documentation
+      - url: https://docs.tingg.africa/reference/4-implement-webhook-via-callback-url-1
+        type: Webhook
+      - url: openapi/cellulant-checkout-api-openapi.yml
+        type: OpenAPI
+      - url: json-schema/cellulant-checkout-request-schema.json
+        type: JSONSchema
+      - url: json-ld/cellulant-context.jsonld
+        type: JSONLD
+      - url: examples/cellulant-create-express-checkout-example.json
+        type: Example
+      - type: NaftikoCapability
+        url: capabilities/checkout-checkout.yaml
+    description: >-
+      Tingg Checkout 3.0 — a single integration to collect payments across
+      25+ African markets via Express Checkout (hosted/modal), Custom Checkout
+      (host-to-host), and the Direct Card API (3DS / 3DS-less / 2D). Supports
+      mobile money, cards, direct bank transfer, and 283+ payment methods.
+  - aid: cellulant:cellulant-tingg-payouts-api
+    name: Cellulant Tingg Payouts API
+    tags:
+      - Payments
+      - Payouts
+      - Disbursement
+      - Mobile Money
+      - Bank Transfer
+      - Airtime
+      - Africa
+    humanURL: https://docs.tingg.africa/docs/payouts-get-started
+    properties:
+      - url: https://docs.tingg.africa/docs/payouts-get-started
+        type: Documentation
+      - url: https://docs.tingg.africa/reference/postpayment
+        type: Documentation
+      - url: openapi/cellulant-payouts-api-openapi.yml
+        type: OpenAPI
+      - url: json-schema/cellulant-payout-packet-schema.json
+        type: JSONSchema
+      - url: examples/cellulant-post-payment-example.json
+        type: Example
+      - type: NaftikoCapability
+        url: capabilities/payouts-payments.yaml
+    description: >-
+      Tingg Payouts (Beep) — a single global JSON endpoint that dispatches
+      postPayment, queryPayment, validateAccount, getBill, getBalance, and
+      refundPayment functions for mobile-money B2C, bulk disbursement,
+      cross-border bank transfers, airtime/data vending, and bill payments
+      (DSTV, GOTV, electricity, water) across 35 African countries.
+  - aid: cellulant:cellulant-tingg-engage-api
+    name: Cellulant Tingg Engage API
+    tags:
+      - SMS
+      - OTP
+      - Notifications
+      - Engagement
+      - Africa
+    humanURL: https://docs.tingg.africa/reference/engagement-service-api-v2
+    properties:
+      - url: https://docs.tingg.africa/reference/engagement-service-api-v2
+        type: Documentation
+      - url: https://docs.tingg.africa/reference/engagement-apis
+        type: Documentation
+      - url: openapi/cellulant-engage-api-openapi.yml
+        type: OpenAPI
+      - url: examples/cellulant-send-engagement-example.json
+        type: Example
+      - type: NaftikoCapability
+        url: capabilities/engage-engagement.yaml
+    description: >-
+      Tingg Engage — single global entry point for transactional alerts.
+      Queue OTP, transactional, and standard SMS with templated parameters
+      and receive per-message delivery callbacks.
+common:
+  - type: Website
+    url: https://www.cellulant.io
+  - type: Product
+    url: https://tingg.africa
+  - type: Portal
+    url: https://developer.tingg.africa
+  - type: Documentation
+    url: https://docs.tingg.africa
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/introduction
+  - type: Documentation
+    url: https://docs.tingg.africa/reference
+  - type: GettingStarted
+    url: https://docs.tingg.africa/docs/checkout-v3-getting-started
+  - type: Sandbox
+    url: https://app.sandbox.tingg.africa
+  - type: SignUp
+    url: https://app.sandbox.tingg.africa
+  - type: Pricing
+    url: https://tingg.africa/pricing/
+  - type: Checkout
+    url: https://tingg.africa/checkout/
+  - type: Payouts
+    url: https://tingg.africa/payouts/
+  - type: PaymentGateway
+    url: https://tingg.africa/payment-gateway/
+  - type: PaymentPages
+    url: https://tingg.africa/payment-pages/
+  - type: PaymentInfrastructure
+    url: https://www.cellulant.io/business-offerings/payment-infrastructure/
+  - type: Blog
+    url: https://www.cellulant.io/category/blog/
+  - type: Blog
+    url: https://tingg.africa/blog/
+  - type: Press
+    url: https://www.cellulant.io/category/press-release/
+  - type: GitHubOrganization
+    url: https://github.com/CellulantCorp
+  - type: SDK
+    name: PHP SDK
+    url: https://packagist.org/packages/tingg/checkout
+  - type: SDK
+    name: Python SDK
+    url: https://pypi.org/project/Tingg/
+  - type: SDK
+    name: Node.js SDK
+    url: https://www.npmjs.com/package/@tingg-sdk/checkout
+  - type: SDK
+    name: .NET SDK
+    url: https://www.nuget.org/packages/Tingg.Checkout.Net
+  - type: SDK
+    name: JavaScript Checkout Library
+    url: https://cdn.cellulant.africa/js/tingg-checkout-library.js
+  - type: SDK
+    name: Express Checkout PHP Client (source)
+    url: https://github.com/CellulantCorp/Express-Checkout-PHP-Client
+  - type: SDK
+    name: Express Checkout Python (source)
+    url: https://github.com/CellulantCorp/express-checkout-python
+  - type: SDK
+    name: Express Checkout Node.js (source)
+    url: https://github.com/CellulantCorp/express-checkout-nodejs
+  - type: SDK
+    name: Express Checkout C# (source)
+    url: https://github.com/CellulantCorp/express-checkout-c-sharp
+  - type: Plugin
+    name: Tingg WooCommerce Payment Gateway
+    url: https://github.com/CellulantCorp/cellulant-tingg-payment-gateway
+  - type: Plugin
+    name: Tingg WordPress Plugin (WordPress.org)
+    url: https://wordpress.org/plugins/cellulant-tingg-checkout/
+  - type: Plugin
+    name: Mula WordPress Plugin
+    url: https://github.com/CellulantCorp/mula-wordpress-plugin
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/cellulant-corporation
+  - type: Twitter
+    url: https://twitter.com/cellulant
+  - type: YouTube
+    url: https://www.youtube.com/@CellulantCorp
+  - type: Careers
+    url: https://www.cellulant.io/careers/
+  - type: Contact
+    url: https://www.cellulant.io/contact-us/
+  - type: TermsOfService
+    url: https://www.cellulant.io/terms/
+  - type: PrivacyPolicy
+    url: https://www.cellulant.io/privacy-policy/
+  - type: Plans
+    url: plans/cellulant-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/cellulant-rate-limits.yml
+  - type: FinOps
+    url: finops/cellulant-finops.yml
+  - type: Vocabulary
+    url: vocabulary/cellulant-vocabulary.yml
+  - type: SpectralRules
+    url: rules/cellulant-rules.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
