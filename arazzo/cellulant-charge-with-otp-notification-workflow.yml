@@ -1,0 +1,189 @@
+arazzo: 1.0.1
+info:
+  title: Cellulant Charge with OTP Notification
+  summary: Initiate a custom checkout, send the customer an OTP by SMS, then push the charge request.
+  description: >-
+    A host-to-host payment flow that layers an out-of-band OTP on top of the
+    Tingg charge. The workflow authenticates, initiates a Custom Checkout to
+    obtain a checkout_request_id, delivers a one-time passcode to the customer
+    by SMS through the Engage API, and then posts the charge request to debit
+    the customer. The OTP step uses the Engage API while the checkout and charge
+    steps use the Checkout API, so each operation is referenced through the
+    explicit sourceDescriptions form. Each step inlines its bearer token and,
+    for checkout calls, the merchant apikey header.
+  version: 1.0.0
+sourceDescriptions:
+- name: checkoutApi
+  url: ../openapi/cellulant-checkout-api-openapi.yml
+  type: openapi
+- name: engageApi
+  url: ../openapi/cellulant-engage-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: charge-with-otp-notification
+  summary: Initiate a custom checkout, SMS an OTP, then charge the customer.
+  description: >-
+    Authenticates, initiates a host-to-host checkout, delivers an OTP by SMS,
+    and posts the charge request to debit the customer.
+  inputs:
+    type: object
+    required:
+    - clientId
+    - clientSecret
+    - apiKey
+    - merchantTransactionId
+    - serviceCode
+    - countryCode
+    - currencyCode
+    - requestAmount
+    - callbackUrl
+    - msisdn
+    - paymentOptionCode
+    - otpReferenceId
+    - otpCode
+    properties:
+      clientId:
+        type: string
+        description: OAuth client id issued in the Tingg dashboard.
+      clientSecret:
+        type: string
+        description: OAuth client secret issued in the Tingg dashboard.
+      apiKey:
+        type: string
+        description: Merchant apikey header value issued in the Tingg dashboard.
+      merchantTransactionId:
+        type: string
+        description: Unique merchant transaction id for this checkout.
+      serviceCode:
+        type: string
+        description: Tingg service code identifying the merchant product line.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code.
+      currencyCode:
+        type: string
+        description: ISO 4217 currency code.
+      requestAmount:
+        type: number
+        description: Amount to charge the customer.
+      callbackUrl:
+        type: string
+        description: IPN callback URL Tingg posts the payment result to.
+      msisdn:
+        type: string
+        description: Customer phone in E.164 format.
+      payerMode:
+        type: string
+        description: Custom checkout payer mode (MOBILE, BANK, or CARD).
+      paymentOptionCode:
+        type: string
+        description: Payment option code identifying the rail to charge.
+      otpReferenceId:
+        type: string
+        description: Reference id for the Engage OTP request.
+      otpCode:
+        type: string
+        description: The one-time passcode value to substitute into the OTP message.
+      senderId:
+        type: string
+        description: Sender id (mask) for the outbound OTP SMS.
+  steps:
+  - stepId: authenticate
+    description: >-
+      Exchange the client credentials for a bearer access token used to
+      authorize the checkout and charge calls.
+    operationId: requestAccessToken
+    requestBody:
+      contentType: application/json
+      payload:
+        grant_type: client_credentials
+        client_id: $inputs.clientId
+        client_secret: $inputs.clientSecret
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      accessToken: $response.body#/access_token
+  - stepId: initiateCheckout
+    description: >-
+      Initiate a host-to-host custom checkout and capture the
+      checkout_request_id.
+    operationId: initiateCustomCheckout
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        merchant_transaction_id: $inputs.merchantTransactionId
+        service_code: $inputs.serviceCode
+        country_code: $inputs.countryCode
+        currency_code: $inputs.currencyCode
+        request_amount: $inputs.requestAmount
+        callback_url: $inputs.callbackUrl
+        msisdn: $inputs.msisdn
+        payer_mode: $inputs.payerMode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      checkoutRequestId: $response.body#/checkout_request_id
+  - stepId: sendOtp
+    description: >-
+      Deliver a one-time passcode to the customer by SMS through Tingg Engage.
+    operationId: sendEngagement
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        notificationType: OTP
+        channels:
+        - SMS
+        referenceID: $inputs.otpReferenceId
+        smsDto:
+          msisdn:
+          - $inputs.msisdn
+          message: "Your payment OTP is ${code}. Valid for 5 minutes."
+          params:
+            code: $inputs.otpCode
+          senderID: $inputs.senderId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      otpTransactionId: $response.body#/transactionID
+  - stepId: chargeCustomer
+    description: >-
+      Post the charge request against the initiated checkout to debit the
+      customer once the OTP has been delivered.
+    operationId: initiateChargeRequest
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        checkout_request_id: $steps.initiateCheckout.outputs.checkoutRequestId
+        merchant_transaction_id: $inputs.merchantTransactionId
+        service_code: $inputs.serviceCode
+        payment_option_code: $inputs.paymentOptionCode
+        msisdn: $inputs.msisdn
+        amount: $inputs.requestAmount
+        currency_code: $inputs.currencyCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      cpgTransactionId: $response.body#/cpg_transaction_id
+      chargeStatusCode: $response.body#/status_code
+  outputs:
+    checkoutRequestId: $steps.initiateCheckout.outputs.checkoutRequestId
+    otpTransactionId: $steps.sendOtp.outputs.otpTransactionId
+    cpgTransactionId: $steps.chargeCustomer.outputs.cpgTransactionId

@@ -1,0 +1,164 @@
+arazzo: 1.0.1
+info:
+  title: Cellulant Express Checkout and Poll Status
+  summary: Authenticate, raise a Tingg Express Checkout, then poll the request status until the payment settles.
+  description: >-
+    The canonical Tingg hosted-checkout flow. The workflow exchanges client
+    credentials for a bearer access token, creates an Express Checkout request
+    that returns short_url and long_url for the customer to complete payment,
+    and then polls the query-status endpoint by merchant_transaction_id until
+    the request reaches a terminal state. Every step spells out its request
+    inline — the bearer token from the auth step and the merchant apikey header
+    — so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: checkoutApi
+  url: ../openapi/cellulant-checkout-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: express-checkout-and-poll-status
+  summary: Create an Express Checkout session and poll until payment status is resolved.
+  description: >-
+    Issues an access token, creates a hosted Express Checkout returning the
+    customer payment URLs, and repeatedly queries the request status until a
+    payment is reported.
+  inputs:
+    type: object
+    required:
+    - clientId
+    - clientSecret
+    - apiKey
+    - merchantTransactionId
+    - serviceCode
+    - countryCode
+    - currencyCode
+    - requestAmount
+    - callbackUrl
+    properties:
+      clientId:
+        type: string
+        description: OAuth client id issued in the Tingg dashboard.
+      clientSecret:
+        type: string
+        description: OAuth client secret issued in the Tingg dashboard.
+      apiKey:
+        type: string
+        description: Merchant apikey header value issued in the Tingg dashboard.
+      merchantTransactionId:
+        type: string
+        description: Unique merchant transaction id for this checkout.
+      serviceCode:
+        type: string
+        description: Tingg service code identifying the merchant product line.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (KE, UG, TZ, NG, GH, ...).
+      currencyCode:
+        type: string
+        description: ISO 4217 currency code.
+      requestAmount:
+        type: number
+        description: Amount to charge the customer.
+      requestDescription:
+        type: string
+        description: Human-readable description shown on the checkout.
+      msisdn:
+        type: string
+        description: Customer phone in E.164 format.
+      customerEmail:
+        type: string
+        description: Customer email address.
+      callbackUrl:
+        type: string
+        description: IPN callback URL Tingg posts the payment result to.
+  steps:
+  - stepId: authenticate
+    description: >-
+      Exchange the client credentials for a bearer access token used to
+      authorize the checkout calls.
+    operationId: requestAccessToken
+    requestBody:
+      contentType: application/json
+      payload:
+        grant_type: client_credentials
+        client_id: $inputs.clientId
+        client_secret: $inputs.clientSecret
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      accessToken: $response.body#/access_token
+  - stepId: createCheckout
+    description: >-
+      Create a hosted Express Checkout session and return the short and long
+      URLs the customer uses to pay.
+    operationId: createExpressCheckout
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        merchant_transaction_id: $inputs.merchantTransactionId
+        service_code: $inputs.serviceCode
+        country_code: $inputs.countryCode
+        currency_code: $inputs.currencyCode
+        request_amount: $inputs.requestAmount
+        request_description: $inputs.requestDescription
+        msisdn: $inputs.msisdn
+        customer_email: $inputs.customerEmail
+        callback_url: $inputs.callbackUrl
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      checkoutRequestId: $response.body#/checkout_request_id
+      shortUrl: $response.body#/short_url
+      longUrl: $response.body#/long_url
+  - stepId: pollStatus
+    description: >-
+      Query the status of the checkout request by merchant_transaction_id.
+      Repeat this step while the request remains in flight; branch to the end
+      once a payment is reported.
+    operationId: queryRequestStatus
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    - name: merchant_transaction_id
+      in: query
+      value: $inputs.merchantTransactionId
+    - name: service_code
+      in: query
+      value: $inputs.serviceCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      requestStatusCode: $response.body#/request_status_code
+      requestStatusDescription: $response.body#/request_status_description
+      payments: $response.body#/payments
+    onSuccess:
+    - name: paymentSettled
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.payments.length > 0
+        type: jsonpath
+    - name: stillPending
+      type: goto
+      stepId: pollStatus
+      criteria:
+      - context: $response.body
+        condition: $.payments.length == 0
+        type: jsonpath
+  outputs:
+    checkoutRequestId: $steps.createCheckout.outputs.checkoutRequestId
+    shortUrl: $steps.createCheckout.outputs.shortUrl
+    requestStatusCode: $steps.pollStatus.outputs.requestStatusCode
+    payments: $steps.pollStatus.outputs.payments

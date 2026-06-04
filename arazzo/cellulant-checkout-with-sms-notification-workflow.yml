@@ -1,0 +1,152 @@
+arazzo: 1.0.1
+info:
+  title: Cellulant Checkout with SMS Notification
+  summary: Create an Express Checkout, then text the customer the short payment URL over Tingg Engage.
+  description: >-
+    Pairs the Tingg Checkout and Engage APIs to deliver a pay-by-link
+    experience. The workflow authenticates against the Checkout API, raises an
+    Express Checkout that returns a short_url, and then sends that link to the
+    customer by SMS through the Engage API so they can complete payment from
+    their phone. Because the two operations live in different OpenAPI
+    descriptions, each step references its operation through the explicit
+    sourceDescriptions form. Each step inlines its bearer token and, for the
+    checkout call, the merchant apikey header.
+  version: 1.0.0
+sourceDescriptions:
+- name: checkoutApi
+  url: ../openapi/cellulant-checkout-api-openapi.yml
+  type: openapi
+- name: engageApi
+  url: ../openapi/cellulant-engage-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: checkout-with-sms-notification
+  summary: Create a checkout and SMS the short payment link to the customer.
+  description: >-
+    Authenticates, creates an Express Checkout, and sends the resulting short
+    URL to the customer over SMS via Tingg Engage.
+  inputs:
+    type: object
+    required:
+    - clientId
+    - clientSecret
+    - apiKey
+    - merchantTransactionId
+    - serviceCode
+    - countryCode
+    - currencyCode
+    - requestAmount
+    - callbackUrl
+    - msisdn
+    - engageReferenceId
+    properties:
+      clientId:
+        type: string
+        description: OAuth client id issued in the Tingg dashboard.
+      clientSecret:
+        type: string
+        description: OAuth client secret issued in the Tingg dashboard.
+      apiKey:
+        type: string
+        description: Merchant apikey header value issued in the Tingg dashboard.
+      merchantTransactionId:
+        type: string
+        description: Unique merchant transaction id for this checkout.
+      serviceCode:
+        type: string
+        description: Tingg service code identifying the merchant product line.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code.
+      currencyCode:
+        type: string
+        description: ISO 4217 currency code.
+      requestAmount:
+        type: number
+        description: Amount to charge the customer.
+      callbackUrl:
+        type: string
+        description: IPN callback URL Tingg posts the payment result to.
+      msisdn:
+        type: string
+        description: Customer phone in E.164 format to receive the SMS.
+      engageReferenceId:
+        type: string
+        description: Reference id for the Engage SMS request.
+      senderId:
+        type: string
+        description: Sender id (mask) for the outbound SMS.
+  steps:
+  - stepId: authenticate
+    description: >-
+      Exchange the client credentials for a bearer access token used to
+      authorize the checkout call.
+    operationId: requestAccessToken
+    requestBody:
+      contentType: application/json
+      payload:
+        grant_type: client_credentials
+        client_id: $inputs.clientId
+        client_secret: $inputs.clientSecret
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      accessToken: $response.body#/access_token
+  - stepId: createCheckout
+    description: >-
+      Create a hosted Express Checkout and capture the short_url to send to the
+      customer.
+    operationId: createExpressCheckout
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        merchant_transaction_id: $inputs.merchantTransactionId
+        service_code: $inputs.serviceCode
+        country_code: $inputs.countryCode
+        currency_code: $inputs.currencyCode
+        request_amount: $inputs.requestAmount
+        msisdn: $inputs.msisdn
+        callback_url: $inputs.callbackUrl
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      checkoutRequestId: $response.body#/checkout_request_id
+      shortUrl: $response.body#/short_url
+  - stepId: sendPaymentLink
+    description: >-
+      Send the short payment URL to the customer by SMS through Tingg Engage so
+      they can complete the checkout from their phone.
+    operationId: sendEngagement
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        notificationType: TRX
+        channels:
+        - SMS
+        referenceID: $inputs.engageReferenceId
+        smsDto:
+          msisdn:
+          - $inputs.msisdn
+          message: "Complete your payment here: ${link}"
+          params:
+            link: $steps.createCheckout.outputs.shortUrl
+          senderID: $inputs.senderId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      engagementTransactionId: $response.body#/transactionID
+  outputs:
+    checkoutRequestId: $steps.createCheckout.outputs.checkoutRequestId
+    shortUrl: $steps.createCheckout.outputs.shortUrl
+    engagementTransactionId: $steps.sendPaymentLink.outputs.engagementTransactionId

@@ -1,0 +1,187 @@
+arazzo: 1.0.1
+info:
+  title: Cellulant Custom Checkout, Charge, and Poll
+  summary: Host-to-host flow — authenticate, initiate a custom checkout, push the charge prompt, then poll until the payment resolves.
+  description: >-
+    The merchant-controlled (host-to-host) Tingg payment flow. The workflow
+    issues a bearer access token, initiates a Custom Checkout to obtain a
+    checkout_request_id, posts a charge request to push the USSD/STK prompt or
+    card charge to the customer, and then polls query-status by
+    merchant_transaction_id until a payment is reported. Each step inlines its
+    bearer token and merchant apikey header so the flow reads and runs without
+    opening the OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: checkoutApi
+  url: ../openapi/cellulant-checkout-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: custom-checkout-charge-and-poll
+  summary: Initiate a custom checkout, charge the customer, and poll until the payment is resolved.
+  description: >-
+    Authenticates, initiates a host-to-host checkout, posts the charge request
+    that prompts the customer to pay, and polls the request status until a
+    payment lands.
+  inputs:
+    type: object
+    required:
+    - clientId
+    - clientSecret
+    - apiKey
+    - merchantTransactionId
+    - serviceCode
+    - countryCode
+    - currencyCode
+    - requestAmount
+    - callbackUrl
+    - paymentOptionCode
+    - msisdn
+    properties:
+      clientId:
+        type: string
+        description: OAuth client id issued in the Tingg dashboard.
+      clientSecret:
+        type: string
+        description: OAuth client secret issued in the Tingg dashboard.
+      apiKey:
+        type: string
+        description: Merchant apikey header value issued in the Tingg dashboard.
+      merchantTransactionId:
+        type: string
+        description: Unique merchant transaction id for this checkout.
+      serviceCode:
+        type: string
+        description: Tingg service code identifying the merchant product line.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code.
+      currencyCode:
+        type: string
+        description: ISO 4217 currency code.
+      requestAmount:
+        type: number
+        description: Amount to charge the customer.
+      callbackUrl:
+        type: string
+        description: IPN callback URL Tingg posts the payment result to.
+      payerMode:
+        type: string
+        description: Custom checkout payer mode (MOBILE, BANK, or CARD).
+      paymentOptionCode:
+        type: string
+        description: Payment option code identifying the rail to charge.
+      msisdn:
+        type: string
+        description: Customer phone in E.164 format to receive the charge prompt.
+  steps:
+  - stepId: authenticate
+    description: >-
+      Exchange the client credentials for a bearer access token used to
+      authorize the checkout and charge calls.
+    operationId: requestAccessToken
+    requestBody:
+      contentType: application/json
+      payload:
+        grant_type: client_credentials
+        client_id: $inputs.clientId
+        client_secret: $inputs.clientSecret
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      accessToken: $response.body#/access_token
+  - stepId: initiateCheckout
+    description: >-
+      Initiate a host-to-host custom checkout and capture the
+      checkout_request_id used to drive the charge.
+    operationId: initiateCustomCheckout
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        merchant_transaction_id: $inputs.merchantTransactionId
+        service_code: $inputs.serviceCode
+        country_code: $inputs.countryCode
+        currency_code: $inputs.currencyCode
+        request_amount: $inputs.requestAmount
+        callback_url: $inputs.callbackUrl
+        msisdn: $inputs.msisdn
+        payer_mode: $inputs.payerMode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      checkoutRequestId: $response.body#/checkout_request_id
+  - stepId: chargeCustomer
+    description: >-
+      Post the charge request against the initiated checkout to push the
+      USSD/STK prompt or card charge to the customer.
+    operationId: initiateChargeRequest
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        checkout_request_id: $steps.initiateCheckout.outputs.checkoutRequestId
+        merchant_transaction_id: $inputs.merchantTransactionId
+        service_code: $inputs.serviceCode
+        payment_option_code: $inputs.paymentOptionCode
+        msisdn: $inputs.msisdn
+        amount: $inputs.requestAmount
+        currency_code: $inputs.currencyCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      cpgTransactionId: $response.body#/cpg_transaction_id
+      chargeStatusCode: $response.body#/status_code
+  - stepId: pollStatus
+    description: >-
+      Query the request status by merchant_transaction_id. Repeat while the
+      charge is in flight; end once a payment is reported.
+    operationId: queryRequestStatus
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    - name: merchant_transaction_id
+      in: query
+      value: $inputs.merchantTransactionId
+    - name: service_code
+      in: query
+      value: $inputs.serviceCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      requestStatusCode: $response.body#/request_status_code
+      payments: $response.body#/payments
+    onSuccess:
+    - name: paymentSettled
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.payments.length > 0
+        type: jsonpath
+    - name: stillPending
+      type: goto
+      stepId: pollStatus
+      criteria:
+      - context: $response.body
+        condition: $.payments.length == 0
+        type: jsonpath
+  outputs:
+    checkoutRequestId: $steps.initiateCheckout.outputs.checkoutRequestId
+    cpgTransactionId: $steps.chargeCustomer.outputs.cpgTransactionId
+    requestStatusCode: $steps.pollStatus.outputs.requestStatusCode
+    payments: $steps.pollStatus.outputs.payments

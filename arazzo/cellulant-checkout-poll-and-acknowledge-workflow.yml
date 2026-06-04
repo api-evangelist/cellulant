@@ -1,0 +1,192 @@
+arazzo: 1.0.1
+info:
+  title: Cellulant Checkout, Poll, and Acknowledge
+  summary: Raise an Express Checkout, poll status until paid, then acknowledge delivery back to the platform.
+  description: >-
+    Closes the loop on a Tingg checkout. The workflow authenticates, creates an
+    Express Checkout, polls query-status until a payment is reported, and then
+    sends an acknowledgement (Full or Partial) back to the platform with the
+    settlement status code so the funds can be released. The acknowledgement
+    status_code follows the documented convention — 183 successful, 180
+    rejected, 188 received and acknowledged later. Each step inlines its bearer
+    token and merchant apikey header.
+  version: 1.0.0
+sourceDescriptions:
+- name: checkoutApi
+  url: ../openapi/cellulant-checkout-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: checkout-poll-and-acknowledge
+  summary: Create a checkout, wait for payment, then acknowledge it back to Tingg.
+  description: >-
+    Authenticates, raises an Express Checkout, polls until a payment settles,
+    and acknowledges the delivered status to the platform.
+  inputs:
+    type: object
+    required:
+    - clientId
+    - clientSecret
+    - apiKey
+    - merchantTransactionId
+    - serviceCode
+    - countryCode
+    - currencyCode
+    - requestAmount
+    - callbackUrl
+    - acknowledgementType
+    - acknowledgmentReference
+    - statusCode
+    properties:
+      clientId:
+        type: string
+        description: OAuth client id issued in the Tingg dashboard.
+      clientSecret:
+        type: string
+        description: OAuth client secret issued in the Tingg dashboard.
+      apiKey:
+        type: string
+        description: Merchant apikey header value issued in the Tingg dashboard.
+      merchantTransactionId:
+        type: string
+        description: Unique merchant transaction id for this checkout.
+      serviceCode:
+        type: string
+        description: Tingg service code identifying the merchant product line.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code.
+      currencyCode:
+        type: string
+        description: ISO 4217 currency code.
+      requestAmount:
+        type: number
+        description: Amount to charge the customer.
+      callbackUrl:
+        type: string
+        description: IPN callback URL Tingg posts the payment result to.
+      acknowledgementType:
+        type: string
+        description: Acknowledgement type — Full or Partial.
+      acknowledgementAmount:
+        type: number
+        description: Required when acknowledgementType is Partial.
+      acknowledgementNarration:
+        type: string
+        description: Free-text narration for the acknowledgement.
+      acknowledgmentReference:
+        type: string
+        description: Merchant reference for the acknowledgement.
+      statusCode:
+        type: integer
+        description: Settlement status code — 183 successful, 180 rejected, 188 received.
+  steps:
+  - stepId: authenticate
+    description: >-
+      Exchange the client credentials for a bearer access token used to
+      authorize the subsequent calls.
+    operationId: requestAccessToken
+    requestBody:
+      contentType: application/json
+      payload:
+        grant_type: client_credentials
+        client_id: $inputs.clientId
+        client_secret: $inputs.clientSecret
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      accessToken: $response.body#/access_token
+  - stepId: createCheckout
+    description: >-
+      Create a hosted Express Checkout session for the customer to pay.
+    operationId: createExpressCheckout
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        merchant_transaction_id: $inputs.merchantTransactionId
+        service_code: $inputs.serviceCode
+        country_code: $inputs.countryCode
+        currency_code: $inputs.currencyCode
+        request_amount: $inputs.requestAmount
+        callback_url: $inputs.callbackUrl
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      checkoutRequestId: $response.body#/checkout_request_id
+      shortUrl: $response.body#/short_url
+  - stepId: pollStatus
+    description: >-
+      Query the request status by merchant_transaction_id, repeating while the
+      request is in flight, until a payment is reported.
+    operationId: queryRequestStatus
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    - name: merchant_transaction_id
+      in: query
+      value: $inputs.merchantTransactionId
+    - name: service_code
+      in: query
+      value: $inputs.serviceCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      requestStatusCode: $response.body#/request_status_code
+      payments: $response.body#/payments
+    onSuccess:
+    - name: paymentSettled
+      type: goto
+      stepId: acknowledge
+      criteria:
+      - context: $response.body
+        condition: $.payments.length > 0
+        type: jsonpath
+    - name: stillPending
+      type: goto
+      stepId: pollStatus
+      criteria:
+      - context: $response.body
+        condition: $.payments.length == 0
+        type: jsonpath
+  - stepId: acknowledge
+    description: >-
+      Send the delivered status back to the platform so settlement can proceed.
+      Use status_code 183 for a successful delivery.
+    operationId: acknowledgePayment
+    parameters:
+    - name: apikey
+      in: header
+      value: $inputs.apiKey
+    - name: Authorization
+      in: header
+      value: "Bearer $steps.authenticate.outputs.accessToken"
+    requestBody:
+      contentType: application/json
+      payload:
+        acknowledgement_type: $inputs.acknowledgementType
+        acknowledgement_amount: $inputs.acknowledgementAmount
+        acknowledgement_narration: $inputs.acknowledgementNarration
+        acknowledgment_reference: $inputs.acknowledgmentReference
+        merchant_transaction_id: $inputs.merchantTransactionId
+        service_code: $inputs.serviceCode
+        status_code: $inputs.statusCode
+        currency_code: $inputs.currencyCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      acknowledgementStatusCode: $response.body#/status_code
+      acknowledgementStatusDescription: $response.body#/status_description
+  outputs:
+    checkoutRequestId: $steps.createCheckout.outputs.checkoutRequestId
+    payments: $steps.pollStatus.outputs.payments
+    acknowledgementStatusCode: $steps.acknowledge.outputs.acknowledgementStatusCode

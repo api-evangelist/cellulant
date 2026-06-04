@@ -1,0 +1,153 @@
+arazzo: 1.0.1
+info:
+  title: Cellulant Get Bill and Pay
+  summary: Fetch the outstanding bill for an account, then settle it with a Beep payout.
+  description: >-
+    A bill-payment flow for billers such as DSTV, GOTV, electricity, and water.
+    The workflow first calls the Beep endpoint with BEEP.getBill to look up the
+    outstanding amount for an account or invoice, then calls the same endpoint
+    with BEEP.postPayment to settle the bill. Both steps use the bare
+    postPayment operationId and inline the Beep Basic Authorization header
+    alongside the payload credentials. The invoiceNumber and amount fields carry
+    the bill reference and settlement amount through the packet.
+  version: 1.0.0
+sourceDescriptions:
+- name: payoutsApi
+  url: ../openapi/cellulant-payouts-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: get-bill-and-pay
+  summary: Look up an outstanding bill and settle it with a payout.
+  description: >-
+    Fetches the bill with BEEP.getBill and settles it with BEEP.postPayment
+    against the same account and invoice.
+  inputs:
+    type: object
+    required:
+    - basicAuth
+    - username
+    - password
+    - countryCode
+    - serviceCode
+    - msisdn
+    - accountNumber
+    - payerTransactionId
+    - amount
+    - datePaymentReceived
+    - currencyCode
+    - invoiceNumber
+    properties:
+      basicAuth:
+        type: string
+        description: Base64-encoded Beep Basic auth credentials for the Authorization header.
+      username:
+        type: string
+        description: Beep payload credential username.
+      password:
+        type: string
+        description: Beep payload credential password.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code.
+      serviceCode:
+        type: string
+        description: Beep biller service code (e.g. DSTV, electricity, water).
+      msisdn:
+        type: string
+        description: Customer mobile number with country code.
+      accountNumber:
+        type: string
+        description: Biller account number to look up and settle.
+      payerTransactionId:
+        type: string
+        description: Unique merchant payer transaction id.
+      amount:
+        type: number
+        description: Amount to settle against the bill.
+      datePaymentReceived:
+        type: string
+        description: Payment received timestamp (yyyy-mm-dd hh:mm:ss).
+      currencyCode:
+        type: string
+        description: Currency code for the settlement.
+      invoiceNumber:
+        type: string
+        description: Bill invoice number reference.
+      callbackUrl:
+        type: string
+        description: URL Beep posts the delivery callback to.
+  steps:
+  - stepId: getBill
+    description: >-
+      Look up the outstanding bill for the account with function BEEP.getBill.
+    operationId: postPayment
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Basic $inputs.basicAuth"
+    requestBody:
+      contentType: application/json
+      payload:
+        function: BEEP.getBill
+        countryCode: $inputs.countryCode
+        payload:
+          credentials:
+            username: $inputs.username
+            password: $inputs.password
+          packet:
+            serviceCode: $inputs.serviceCode
+            MSISDN: $inputs.msisdn
+            accountNumber: $inputs.accountNumber
+            payerTransactionID: $inputs.payerTransactionId
+            amount: $inputs.amount
+            datePaymentReceived: $inputs.datePaymentReceived
+            currencyCode: $inputs.currencyCode
+            countryCode: $inputs.countryCode
+            invoiceNumber: $inputs.invoiceNumber
+    successCriteria:
+    - condition: $statusCode == 200
+    - condition: $response.body#/authStatus/authStatusCode == 131
+    outputs:
+      billAuthStatusCode: $response.body#/authStatus/authStatusCode
+      billStatusDescription: $response.body#/results/0/statusDescription
+  - stepId: payBill
+    description: >-
+      Settle the looked-up bill with function BEEP.postPayment against the same
+      account and invoice number.
+    operationId: postPayment
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Basic $inputs.basicAuth"
+    requestBody:
+      contentType: application/json
+      payload:
+        function: BEEP.postPayment
+        countryCode: $inputs.countryCode
+        payload:
+          credentials:
+            username: $inputs.username
+            password: $inputs.password
+          packet:
+            serviceCode: $inputs.serviceCode
+            MSISDN: $inputs.msisdn
+            accountNumber: $inputs.accountNumber
+            payerTransactionID: $inputs.payerTransactionId
+            amount: $inputs.amount
+            datePaymentReceived: $inputs.datePaymentReceived
+            currencyCode: $inputs.currencyCode
+            countryCode: $inputs.countryCode
+            invoiceNumber: $inputs.invoiceNumber
+            extraData:
+              callbackUrl: $inputs.callbackUrl
+              pushToOriginator: true
+    successCriteria:
+    - condition: $statusCode == 200
+    - condition: $response.body#/authStatus/authStatusCode == 131
+    outputs:
+      beepTransactionId: $response.body#/results/0/beepTransactionID
+      paymentStatusCode: $response.body#/results/0/statusCode
+  outputs:
+    billAuthStatusCode: $steps.getBill.outputs.billAuthStatusCode
+    beepTransactionId: $steps.payBill.outputs.beepTransactionId
+    paymentStatusCode: $steps.payBill.outputs.paymentStatusCode
