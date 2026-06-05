@@ -1,18 +1,14 @@
 aid: cellulant
 name: Cellulant
 description: >-
-  Cellulant is a pan-African payments platform headquartered in Nairobi, Kenya,
-  operating across 35 African countries. Its flagship product Tingg is a single
-  API that lets businesses collect online and offline payments, disburse to
-  mobile money wallets and bank accounts, vend airtime and data, pay bills,
-  and engage customers by SMS — interoperably across 350+ banks, mobile
-  network operators, and card networks. Cellulant processes more than 4.5
-  million transactions per day for over 2,000 enterprise merchants and powers
-  payments for ~220 million consumers. The Tingg platform exposes three
-  primary developer-facing surfaces: Tingg Checkout 3.0 (Express, Custom and
-  Direct Card), Tingg Payouts (the Beep global JSON endpoint), and Tingg
-  Engage (transactional SMS). Cellulant ships official SDKs for PHP, Python,
-  Node.js, .NET, JavaScript, plus a WooCommerce plugin.
+  Cellulant is a pan-African payments platform headquartered in Nairobi, Kenya, operating across 35 African countries.
+  Its flagship product Tingg is a single API that lets businesses collect online and offline payments, disburse to
+  mobile money wallets and bank accounts, vend airtime and data, pay bills, and engage customers by SMS — interoperably
+  across 350+ banks, mobile network operators, and card networks. Cellulant processes more than 4.5 million transactions
+  per day for over 2,000 enterprise merchants and powers payments for ~220 million consumers. The Tingg platform exposes
+  three primary developer-facing surfaces: Tingg Checkout 3.0 (Express, Custom and Direct Card), Tingg Payouts (the Beep
+  global JSON endpoint), and Tingg Engage (transactional SMS). Cellulant ships official SDKs for PHP, Python, Node.js,
+  .NET, JavaScript, plus a WooCommerce plugin.
 type: Index
 position: Provider
 access: 3rd-Party
@@ -69,13 +65,10 @@ apis:
         type: JSONLD
       - url: examples/cellulant-create-express-checkout-example.json
         type: Example
-      - type: NaftikoCapability
-        url: capabilities/checkout-checkout.yaml
     description: >-
-      Tingg Checkout 3.0 — a single integration to collect payments across
-      25+ African markets via Express Checkout (hosted/modal), Custom Checkout
-      (host-to-host), and the Direct Card API (3DS / 3DS-less / 2D). Supports
-      mobile money, cards, direct bank transfer, and 283+ payment methods.
+      Tingg Checkout 3.0 — a single integration to collect payments across 25+ African markets via Express Checkout
+      (hosted/modal), Custom Checkout (host-to-host), and the Direct Card API (3DS / 3DS-less / 2D). Supports mobile
+      money, cards, direct bank transfer, and 283+ payment methods.
   - aid: cellulant:cellulant-tingg-payouts-api
     name: Cellulant Tingg Payouts API
     tags:
@@ -98,14 +91,10 @@ apis:
         type: JSONSchema
       - url: examples/cellulant-post-payment-example.json
         type: Example
-      - type: NaftikoCapability
-        url: capabilities/payouts-payments.yaml
     description: >-
-      Tingg Payouts (Beep) — a single global JSON endpoint that dispatches
-      postPayment, queryPayment, validateAccount, getBill, getBalance, and
-      refundPayment functions for mobile-money B2C, bulk disbursement,
-      cross-border bank transfers, airtime/data vending, and bill payments
-      (DSTV, GOTV, electricity, water) across 35 African countries.
+      Tingg Payouts (Beep) — a single global JSON endpoint that dispatches postPayment, queryPayment, validateAccount,
+      getBill, getBalance, and refundPayment functions for mobile-money B2C, bulk disbursement, cross-border bank
+      transfers, airtime/data vending, and bill payments (DSTV, GOTV, electricity, water) across 35 African countries.
   - aid: cellulant:cellulant-tingg-engage-api
     name: Cellulant Tingg Engage API
     tags:
@@ -124,46 +113,47 @@ apis:
         type: OpenAPI
       - url: examples/cellulant-send-engagement-example.json
         type: Example
-      - type: NaftikoCapability
-        url: capabilities/engage-engagement.yaml
     description: >-
-      Tingg Engage — single global entry point for transactional alerts.
-      Queue OTP, transactional, and standard SMS with templated parameters
-      and receive per-message delivery callbacks.
+      Tingg Engage — single global entry point for transactional alerts. Queue OTP, transactional, and standard SMS with
+      templated parameters and receive per-message delivery callbacks.
 common:
+  - type: PostmanWorkspace
+    url: https://www.postman.com/kinlaneapi/cellulant/overview
   - type: ArazzoWorkflows
     url: arazzo/
     workflows:
-    - url: arazzo/cellulant-charge-with-otp-notification-workflow.yml
-      name: Cellulant Charge with OTP Notification
-      summary: Initiate a custom checkout, send the customer an OTP by SMS, then push the charge request.
-    - url: arazzo/cellulant-check-balance-and-payout-workflow.yml
-      name: Cellulant Check Balance and Payout
-      summary: Read the float balance, then disburse a payout only when the platform authenticated the balance query.
-    - url: arazzo/cellulant-checkout-poll-and-acknowledge-workflow.yml
-      name: Cellulant Checkout, Poll, and Acknowledge
-      summary: Raise an Express Checkout, poll status until paid, then acknowledge delivery back to the platform.
-    - url: arazzo/cellulant-checkout-with-sms-notification-workflow.yml
-      name: Cellulant Checkout with SMS Notification
-      summary: Create an Express Checkout, then text the customer the short payment URL over Tingg Engage.
-    - url: arazzo/cellulant-custom-checkout-charge-and-poll-workflow.yml
-      name: Cellulant Custom Checkout, Charge, and Poll
-      summary: "Host-to-host flow \u2014 authenticate, initiate a custom checkout, push the charge prompt, then poll until the payment resolves."
-    - url: arazzo/cellulant-express-checkout-and-poll-status-workflow.yml
-      name: Cellulant Express Checkout and Poll Status
-      summary: Authenticate, raise a Tingg Express Checkout, then poll the request status until the payment settles.
-    - url: arazzo/cellulant-get-bill-and-pay-workflow.yml
-      name: Cellulant Get Bill and Pay
-      summary: Fetch the outstanding bill for an account, then settle it with a Beep payout.
-    - url: arazzo/cellulant-payout-query-and-refund-workflow.yml
-      name: Cellulant Payout, Query, and Refund
-      summary: Disburse a payout, query its outcome, and reverse it with a refund when the payout did not succeed.
-    - url: arazzo/cellulant-post-payout-and-query-status-workflow.yml
-      name: Cellulant Post Payout and Query Status
-      summary: Disburse a payout, then poll the Beep platform with queryPayment until the payout reaches a terminal state.
-    - url: arazzo/cellulant-validate-and-post-payout-workflow.yml
-      name: Cellulant Validate and Post Payout
-      summary: Validate the destination account, then post a mobile money or bank payout through the Beep platform.
+      - url: arazzo/cellulant-charge-with-otp-notification-workflow.yml
+        name: Cellulant Charge with OTP Notification
+        summary: Initiate a custom checkout, send the customer an OTP by SMS, then push the charge request.
+      - url: arazzo/cellulant-check-balance-and-payout-workflow.yml
+        name: Cellulant Check Balance and Payout
+        summary: Read the float balance, then disburse a payout only when the platform authenticated the balance query.
+      - url: arazzo/cellulant-checkout-poll-and-acknowledge-workflow.yml
+        name: Cellulant Checkout, Poll, and Acknowledge
+        summary: Raise an Express Checkout, poll status until paid, then acknowledge delivery back to the platform.
+      - url: arazzo/cellulant-checkout-with-sms-notification-workflow.yml
+        name: Cellulant Checkout with SMS Notification
+        summary: Create an Express Checkout, then text the customer the short payment URL over Tingg Engage.
+      - url: arazzo/cellulant-custom-checkout-charge-and-poll-workflow.yml
+        name: Cellulant Custom Checkout, Charge, and Poll
+        summary: >-
+          Host-to-host flow — authenticate, initiate a custom checkout, push the charge prompt, then poll until the
+          payment resolves.
+      - url: arazzo/cellulant-express-checkout-and-poll-status-workflow.yml
+        name: Cellulant Express Checkout and Poll Status
+        summary: Authenticate, raise a Tingg Express Checkout, then poll the request status until the payment settles.
+      - url: arazzo/cellulant-get-bill-and-pay-workflow.yml
+        name: Cellulant Get Bill and Pay
+        summary: Fetch the outstanding bill for an account, then settle it with a Beep payout.
+      - url: arazzo/cellulant-payout-query-and-refund-workflow.yml
+        name: Cellulant Payout, Query, and Refund
+        summary: Disburse a payout, query its outcome, and reverse it with a refund when the payout did not succeed.
+      - url: arazzo/cellulant-post-payout-and-query-status-workflow.yml
+        name: Cellulant Post Payout and Query Status
+        summary: Disburse a payout, then poll the Beep platform with queryPayment until the payout reaches a terminal state.
+      - url: arazzo/cellulant-validate-and-post-payout-workflow.yml
+        name: Cellulant Validate and Post Payout
+        summary: Validate the destination account, then post a mobile money or bank payout through the Beep platform.
   - type: Website
     url: https://www.cellulant.io
   - type: Product
