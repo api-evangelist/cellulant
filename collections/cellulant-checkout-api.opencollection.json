@@ -1,0 +1,176 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cellulant Tingg Checkout API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Request OAuth Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/v1/oauth/token/request",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Exchange clientId, clientSecret, and apiKey for a bearer access token used to authorize subsequent Tingg API requests."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Express Checkout",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Express Checkout Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/v3/checkout-api/checkout-request/express-request",
+            "headers": [
+              {
+                "name": "apikey",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a hosted checkout session. The response includes both short_url and long_url that the merchant can present to the end-user (use short_url to avoid truncation in SMS or WhatsApp)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Custom Checkout",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate Custom Checkout Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/v3/checkout-api/checkout-request/custom-request",
+            "headers": [
+              {
+                "name": "apikey",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate a host-to-host checkout where the merchant collects payment details and posts them to Tingg directly, retaining control of the UX."
+        },
+        {
+          "info": {
+            "name": "Initiate Charge Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/v3/checkout-api/checkout-request/charge",
+            "headers": [
+              {
+                "name": "apikey",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Post a charge request to debit the customer for an initiated custom checkout. Used to push USSD/STK prompts or card charges from the merchant's backend."
+        },
+        {
+          "info": {
+            "name": "Query Request Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tingg.africa/v3/checkout-api/query-status",
+            "headers": [
+              {
+                "name": "apikey",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "merchant_transaction_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "service_code",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve the current status of a previously raised checkout or charge request by merchant_transaction_id."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Acknowledgement",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Acknowledge Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/v3/checkout-api/acknowledgement/request",
+            "headers": [
+              {
+                "name": "apikey",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send the final or partial delivered status for a checkout transaction back to the platform."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,283 @@
+{
+  "info": {
+    "_postman_id": "7b8c0f0e-2176-414b-a229-3e5b05069a0d",
+    "name": "Cellulant Tingg Payouts API",
+    "description": "Tingg Payouts (Beep Server) \u2014 send value to mobile money wallets, bank\naccounts, airtime/data, and bill payments across 35 African countries\nthrough a single global JSON endpoint.\n\n\nContact Support:\n Name: Cellulant Developer Support\n Email: developer@cellulant.io",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:06:26.000Z",
+    "updatedAt": "2026-06-05T15:06:27.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-7b8c0f0e-2176-414b-a229-3e5b05069a0d"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "global-api",
+          "item": [
+            {
+              "name": "payments",
+              "item": [
+                {
+                  "name": "Post a Payment",
+                  "id": "62e93a4e-1935-4d90-ba5a-404dc831857f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"function\": \"BEEP.refundPayment\",\n  \"countryCode\": \"<string>\",\n  \"payload\": {\n    \"credentials\": {\n      \"username\": \"<string>\",\n      \"password\": \"<string>\"\n    },\n    \"packet\": {\n      \"serviceCode\": \"<string>\",\n      \"MSISDN\": \"<string>\",\n      \"accountNumber\": \"<string>\",\n      \"payerTransactionID\": \"<string>\",\n      \"amount\": \"<double>\",\n      \"datePaymentReceived\": \"<string>\",\n      \"currencyCode\": \"<string>\",\n      \"countryCode\": \"<string>\",\n      \"narration\": \"<string>\",\n      \"invoiceNumber\": \"<string>\",\n      \"hubID\": \"<string>\",\n      \"paymentMode\": \"Card\",\n      \"customerNames\": \"<string>\",\n      \"extraData\": {\n        \"callbackUrl\": \"<uri>\",\n        \"pushToOriginator\": \"<boolean>\",\n        \"destinationBankCode\": \"<string>\",\n        \"destinationBankName\": \"<string>\",\n        \"destinationAccountName\": \"<string>\",\n        \"destinationAccountNo\": \"<string>\"\n      }\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/global-api/payments",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "global-api",
+                        "payments"
+                      ]
+                    },
+                    "description": "Single global entry point for the Beep payouts platform. The `function`\nfield discriminates the operation: `BEEP.postPayment`, `BEEP.queryPayment`,\n`BEEP.validateAccount`, `BEEP.getBill`, `BEEP.getBalance`, `BEEP.refundPayment`.\nUsed for mobile money B2C, bulk disbursement, bank transfers, airtime/data\nvending, and bill payments (DSTV, GOTV, electricity, water).\n"
+                  },
+                  "response": [
+                    {
+                      "id": "bb7faf13-f9c9-4669-a6dd-6a87d6688700",
+                      "name": "Payout accepted (asynchronous \u2014 status callbacks fire on the configured callback URL when payment is delivered)",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"function\": \"BEEP.refundPayment\",\n  \"countryCode\": \"<string>\",\n  \"payload\": {\n    \"credentials\": {\n      \"username\": \"<string>\",\n      \"password\": \"<string>\"\n    },\n    \"packet\": {\n      \"serviceCode\": \"<string>\",\n      \"MSISDN\": \"<string>\",\n      \"accountNumber\": \"<string>\",\n      \"payerTransactionID\": \"<string>\",\n      \"amount\": \"<double>\",\n      \"datePaymentReceived\": \"<string>\",\n      \"currencyCode\": \"<string>\",\n      \"countryCode\": \"<string>\",\n      \"narration\": \"<string>\",\n      \"invoiceNumber\": \"<string>\",\n      \"hubID\": \"<string>\",\n      \"paymentMode\": \"Card\",\n      \"customerNames\": \"<string>\",\n      \"extraData\": {\n        \"callbackUrl\": \"<uri>\",\n        \"pushToOriginator\": \"<boolean>\",\n        \"destinationBankCode\": \"<string>\",\n        \"destinationBankName\": \"<string>\",\n        \"destinationAccountName\": \"<string>\",\n        \"destinationAccountNo\": \"<string>\"\n      }\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/global-api/payments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "global-api",
+                            "payments"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"authStatus\": {\n    \"authStatusCode\": \"<integer>\",\n    \"authStatusDescription\": \"<string>\"\n  },\n  \"results\": [\n    {\n      \"statusCode\": \"<integer>\",\n      \"statusDescription\": \"<string>\",\n      \"payerTransactionID\": \"<string>\",\n      \"beepTransactionID\": \"<long>\"\n    },\n    {\n      \"statusCode\": \"<integer>\",\n      \"statusDescription\": \"<string>\",\n      \"payerTransactionID\": \"<string>\",\n      \"beepTransactionID\": \"<long>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:06:27.000Z",
+                      "updatedAt": "2026-06-05T15:06:27.000Z",
+                      "uid": "35240-bb7faf13-f9c9-4669-a6dd-6a87d6688700"
+                    },
+                    {
+                      "id": "3cfda9ec-40eb-4ec0-bcbc-384d8b6e73f5",
+                      "name": "Error response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"function\": \"BEEP.refundPayment\",\n  \"countryCode\": \"<string>\",\n  \"payload\": {\n    \"credentials\": {\n      \"username\": \"<string>\",\n      \"password\": \"<string>\"\n    },\n    \"packet\": {\n      \"serviceCode\": \"<string>\",\n      \"MSISDN\": \"<string>\",\n      \"accountNumber\": \"<string>\",\n      \"payerTransactionID\": \"<string>\",\n      \"amount\": \"<double>\",\n      \"datePaymentReceived\": \"<string>\",\n      \"currencyCode\": \"<string>\",\n      \"countryCode\": \"<string>\",\n      \"narration\": \"<string>\",\n      \"invoiceNumber\": \"<string>\",\n      \"hubID\": \"<string>\",\n      \"paymentMode\": \"Card\",\n      \"customerNames\": \"<string>\",\n      \"extraData\": {\n        \"callbackUrl\": \"<uri>\",\n        \"pushToOriginator\": \"<boolean>\",\n        \"destinationBankCode\": \"<string>\",\n        \"destinationBankName\": \"<string>\",\n        \"destinationAccountName\": \"<string>\",\n        \"destinationAccountNo\": \"<string>\"\n      }\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/global-api/payments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "global-api",
+                            "payments"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"authStatus\": {\n    \"authStatusCode\": \"<integer>\",\n    \"authStatusDescription\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-06-05T15:06:27.000Z",
+                      "updatedAt": "2026-06-05T15:06:27.000Z",
+                      "uid": "35240-3cfda9ec-40eb-4ec0-bcbc-384d8b6e73f5"
+                    },
+                    {
+                      "id": "d7874b90-acd4-4fa1-8eb3-578eb1e23c56",
+                      "name": "Server error \u2014 query transaction status before retrying or marking failed.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"function\": \"BEEP.refundPayment\",\n  \"countryCode\": \"<string>\",\n  \"payload\": {\n    \"credentials\": {\n      \"username\": \"<string>\",\n      \"password\": \"<string>\"\n    },\n    \"packet\": {\n      \"serviceCode\": \"<string>\",\n      \"MSISDN\": \"<string>\",\n      \"accountNumber\": \"<string>\",\n      \"payerTransactionID\": \"<string>\",\n      \"amount\": \"<double>\",\n      \"datePaymentReceived\": \"<string>\",\n      \"currencyCode\": \"<string>\",\n      \"countryCode\": \"<string>\",\n      \"narration\": \"<string>\",\n      \"invoiceNumber\": \"<string>\",\n      \"hubID\": \"<string>\",\n      \"paymentMode\": \"Card\",\n      \"customerNames\": \"<string>\",\n      \"extraData\": {\n        \"callbackUrl\": \"<uri>\",\n        \"pushToOriginator\": \"<boolean>\",\n        \"destinationBankCode\": \"<string>\",\n        \"destinationBankName\": \"<string>\",\n        \"destinationAccountName\": \"<string>\",\n        \"destinationAccountNo\": \"<string>\"\n      }\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/global-api/payments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "global-api",
+                            "payments"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"authStatus\": {\n    \"authStatusCode\": \"<integer>\",\n    \"authStatusDescription\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-06-05T15:06:27.000Z",
+                      "updatedAt": "2026-06-05T15:06:27.000Z",
+                      "uid": "35240-d7874b90-acd4-4fa1-8eb3-578eb1e23c56"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:06:27.000Z",
+                  "updatedAt": "2026-06-05T15:06:27.000Z",
+                  "uid": "35240-62e93a4e-1935-4d90-ba5a-404dc831857f"
+                }
+              ],
+              "id": "dd584606-06ea-4d13-8802-88789e563fee",
+              "createdAt": "2026-06-05T15:06:27.000Z",
+              "updatedAt": "2026-06-05T15:06:27.000Z",
+              "uid": "35240-dd584606-06ea-4d13-8802-88789e563fee"
+            }
+          ],
+          "id": "64212642-6823-4e64-b3c8-84558aa841b7",
+          "createdAt": "2026-06-05T15:06:27.000Z",
+          "updatedAt": "2026-06-05T15:06:27.000Z",
+          "uid": "35240-64212642-6823-4e64-b3c8-84558aa841b7"
+        }
+      ],
+      "id": "114e2219-535f-44b4-aff1-f80b519a9315",
+      "createdAt": "2026-06-05T15:06:27.000Z",
+      "updatedAt": "2026-06-05T15:06:27.000Z",
+      "uid": "35240-114e2219-535f-44b4-aff1-f80b519a9315"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.tingg.africa"
+    }
+  ]
+}

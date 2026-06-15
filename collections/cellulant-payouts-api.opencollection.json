@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cellulant Tingg Payouts API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Post a Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/v1/global-api/payments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Single global entry point for the Beep payouts platform. The `function`\nfield discriminates the operation: `BEEP.postPayment`, `BEEP.queryPayment`,\n`BEEP.validateAccount`, `BEEP.getBill`, `BEEP.getBalance`, `BEEP.refundPayment`.\nUsed for mobile money B2C, bulk disbursement, bank transfers, airtime/data\nvending, and bill payments (DSTV, GOTV, electricity, water).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

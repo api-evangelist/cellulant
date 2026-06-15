@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cellulant Tingg Engage API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Engagement",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Engagement Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/api/v2/engagement",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queue an SMS notification (OTP, transactional, or standard). Delivery status is reported via callback to the supplied callbackUrl."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

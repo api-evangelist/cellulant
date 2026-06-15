@@ -1,0 +1,220 @@
+{
+  "info": {
+    "_postman_id": "2b49ab17-1198-4c48-8649-729fe4e2dc45",
+    "name": "Cellulant Tingg Engage API",
+    "description": "Tingg Engage \u2014 single global entry point for transactional alerts.\nSend SMS (OTP, transactional, standard) to customers with templated\nparameters and delivery status callbacks.\n\n\nContact Support:\n Name: Cellulant Developer Support\n Email: developer@cellulant.io",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:06:27.000Z",
+    "updatedAt": "2026-06-05T15:06:28.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2b49ab17-1198-4c48-8649-729fe4e2dc45"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "v2",
+          "item": [
+            {
+              "name": "engagement",
+              "item": [
+                {
+                  "name": "Send Engagement Message",
+                  "id": "0bba8a46-3aa8-4c54-88dc-eb85adc3dbda",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"notificationType\": \"TRX\",\n  \"channels\": [\n    \"SMS\",\n    \"SMS\"\n  ],\n  \"referenceID\": \"<string>\",\n  \"smsDto\": {\n    \"msisdn\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"message\": \"<string>\",\n    \"params\": {\n      \"deserunt_93\": \"<string>\",\n      \"in_e\": \"<string>\",\n      \"ut_274\": \"<string>\"\n    },\n    \"senderID\": \"<string>\"\n  },\n  \"callbackUrl\": \"<uri>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v2/engagement",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v2",
+                        "engagement"
+                      ]
+                    },
+                    "description": "Queue an SMS notification (OTP, transactional, or standard). Delivery status is reported via callback to the supplied callbackUrl."
+                  },
+                  "response": [
+                    {
+                      "id": "4aca4cb4-000a-4561-9dbb-45e693aba6b7",
+                      "name": "Message queued",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"notificationType\": \"TRX\",\n  \"channels\": [\n    \"SMS\",\n    \"SMS\"\n  ],\n  \"referenceID\": \"<string>\",\n  \"smsDto\": {\n    \"msisdn\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"message\": \"<string>\",\n    \"params\": {\n      \"deserunt_93\": \"<string>\",\n      \"in_e\": \"<string>\",\n      \"ut_274\": \"<string>\"\n    },\n    \"senderID\": \"<string>\"\n  },\n  \"callbackUrl\": \"<uri>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v2/engagement",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v2",
+                            "engagement"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"transactionID\": \"<uuid>\",\n  \"statusCode\": \"<integer>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:06:28.000Z",
+                      "updatedAt": "2026-06-05T15:06:28.000Z",
+                      "uid": "35240-4aca4cb4-000a-4561-9dbb-45e693aba6b7"
+                    },
+                    {
+                      "id": "7ffab4a5-de0b-4e4e-a27a-f659be3e17b4",
+                      "name": "Error response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"notificationType\": \"TRX\",\n  \"channels\": [\n    \"SMS\",\n    \"SMS\"\n  ],\n  \"referenceID\": \"<string>\",\n  \"smsDto\": {\n    \"msisdn\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"message\": \"<string>\",\n    \"params\": {\n      \"deserunt_93\": \"<string>\",\n      \"in_e\": \"<string>\",\n      \"ut_274\": \"<string>\"\n    },\n    \"senderID\": \"<string>\"\n  },\n  \"callbackUrl\": \"<uri>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v2/engagement",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v2",
+                            "engagement"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"statusCode\": \"<integer>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:06:28.000Z",
+                      "updatedAt": "2026-06-05T15:06:28.000Z",
+                      "uid": "35240-7ffab4a5-de0b-4e4e-a27a-f659be3e17b4"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:06:28.000Z",
+                  "updatedAt": "2026-06-05T15:06:28.000Z",
+                  "uid": "35240-0bba8a46-3aa8-4c54-88dc-eb85adc3dbda"
+                }
+              ],
+              "id": "64e5626d-0756-4d23-8a56-23957176726a",
+              "createdAt": "2026-06-05T15:06:28.000Z",
+              "updatedAt": "2026-06-05T15:06:28.000Z",
+              "uid": "35240-64e5626d-0756-4d23-8a56-23957176726a"
+            }
+          ],
+          "id": "d4952a93-c671-477b-a5da-5dd81fe797c1",
+          "createdAt": "2026-06-05T15:06:28.000Z",
+          "updatedAt": "2026-06-05T15:06:28.000Z",
+          "uid": "35240-d4952a93-c671-477b-a5da-5dd81fe797c1"
+        }
+      ],
+      "id": "cb9c705b-b85b-41c0-b98e-81ee9beaffd2",
+      "createdAt": "2026-06-05T15:06:28.000Z",
+      "updatedAt": "2026-06-05T15:06:28.000Z",
+      "uid": "35240-cb9c705b-b85b-41c0-b98e-81ee9beaffd2"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.tingg.africa"
+    }
+  ]
+}
