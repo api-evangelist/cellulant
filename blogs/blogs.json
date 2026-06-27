@@ -2,7 +2,7 @@
   "repo": "cellulant",
   "feeds": [
     {
-      "source": "https://www.cellulant.io/category/blog/",
+      "source": "https://www.cellulant.io/category/blog/feed/",
       "error": "HTTPError"
     },
     {
@@ -15,8 +15,12 @@
     {
       "source": "https://www.cellulant.io/business-offerings/payment-infrastructure/",
       "error": "HTTPError"
+    },
+    {
+      "source": "https://www.cellulant.io/category/blog/",
+      "error": "HTTPError"
     }
   ],
   "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T12:03:07Z"
 }
