@@ -1,0 +1,31 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/cellulant-checkout-api-openapi.yml, openapi/cellulant-engage-api-openapi.yml,
+  openapi/cellulant-payouts-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/cellulant-checkout-api-openapi.yml
+  - openapi/cellulant-engage-api-openapi.yml
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: apikey
+  description: Merchant apiKey issued in the Tingg integration dashboard.
+  sources:
+  - openapi/cellulant-checkout-api-openapi.yml
+- name: BasicAuth
+  type: http
+  scheme: basic
+  description: Beep credentials supplied as Basic auth in addition to credentials in the payload.
+  sources:
+  - openapi/cellulant-payouts-api-openapi.yml
