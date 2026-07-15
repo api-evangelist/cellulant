@@ -117,6 +117,8 @@ apis:
       Tingg Engage — single global entry point for transactional alerts. Queue OTP, transactional, and standard SMS with
       templated parameters and receive per-message delivery callbacks.
 common:
+  - type: AgenticAccess
+    url: agentic-access/cellulant-agentic-access.yml
   - type: DomainSecurity
     url: security/cellulant-domain-security.yml
   - type: Authentication
