@@ -1,11 +1,14 @@
 openapi: 3.1.0
 info:
-  title: Cellulant Tingg Payouts API
-  description: |
-    Tingg Payouts (Beep Server) — send value to mobile money wallets, bank
-    accounts, airtime/data, and bill payments across 35 African countries
-    through a single global JSON endpoint.
-  version: "1.0.0"
+  title: Cellulant Tingg Checkout Acknowledgement Payments API
+  description: 'Tingg Checkout 3.0 — accept payments across 25+ African markets through
+
+    a single integration. Supports Express Checkout (hosted/modal) and Custom
+
+    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.
+
+    '
+  version: 3.0.0
   contact:
     name: Cellulant Developer Support
     url: https://developer.tingg.africa
@@ -14,28 +17,34 @@ info:
     name: Cellulant Terms of Service
     url: https://www.cellulant.io/terms
 servers:
-  - url: https://api.tingg.africa
-    description: Production
-  - url: https://api-approval.tingg.africa
-    description: Sandbox
+- url: https://api.tingg.africa
+  description: Production
+- url: https://api-approval.tingg.africa
+  description: Sandbox
 security:
-  - BasicAuth: []
+- BearerAuth: []
+  ApiKeyAuth: []
 tags:
-  - name: Payments
-    description: Post payouts, queries, validations, balances, and refunds.
+- name: Payments
+  description: Post payouts, queries, validations, balances, and refunds.
 paths:
   /v1/global-api/payments:
     post:
       summary: Post a Payment
-      description: |
-        Single global entry point for the Beep payouts platform. The `function`
+      description: 'Single global entry point for the Beep payouts platform. The `function`
+
         field discriminates the operation: `BEEP.postPayment`, `BEEP.queryPayment`,
+
         `BEEP.validateAccount`, `BEEP.getBill`, `BEEP.getBalance`, `BEEP.refundPayment`.
+
         Used for mobile money B2C, bulk disbursement, bank transfers, airtime/data
+
         vending, and bill payments (DSTV, GOTV, electricity, water).
+
+        '
       operationId: postPayment
       tags:
-        - Payments
+      - Payments
       requestBody:
         required: true
         content:
@@ -59,63 +68,27 @@ paths:
               examples:
                 PendingAcknowledgementExample:
                   $ref: '#/components/examples/PendingAcknowledgementExample'
-        '4XX':
+        4XX:
           $ref: '#/components/responses/ErrorResponse'
-        '5XX':
+        5XX:
           description: Server error — query transaction status before retrying or marking failed.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
-  securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
-      description: Beep credentials supplied as Basic auth in addition to credentials in the payload.
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    PaymentRequest:
-      type: object
-      required: [function, countryCode, payload]
-      properties:
-        function:
-          type: string
-          enum:
-            - BEEP.postPayment
-            - BEEP.queryPayment
-            - BEEP.validateAccount
-            - BEEP.getBill
-            - BEEP.getBalance
-            - BEEP.refundPayment
-        countryCode:
-          type: string
-          description: ISO 3166-1 alpha-2 country code (KE, GH, TZ, UG, NG, ...).
-        payload:
-          type: object
-          required: [credentials, packet]
-          properties:
-            credentials:
-              $ref: '#/components/schemas/Credentials'
-            packet:
-              $ref: '#/components/schemas/Packet'
-    Credentials:
-      type: object
-      required: [username, password]
-      properties:
-        username:
-          type: string
-        password:
-          type: string
     Packet:
       type: object
-      required: [serviceCode, MSISDN, accountNumber, payerTransactionID, amount, datePaymentReceived, currencyCode, countryCode]
+      required:
+      - serviceCode
+      - MSISDN
+      - accountNumber
+      - payerTransactionID
+      - amount
+      - datePaymentReceived
+      - currencyCode
+      - countryCode
       properties:
         serviceCode:
           type: string
@@ -144,11 +117,45 @@ components:
           type: string
         paymentMode:
           type: string
-          enum: [ATM, Mobile, Bank, Card, Cash]
+          enum:
+          - ATM
+          - Mobile
+          - Bank
+          - Card
+          - Cash
         customerNames:
           type: string
         extraData:
           $ref: '#/components/schemas/ExtraData'
+    PaymentRequest:
+      type: object
+      required:
+      - function
+      - countryCode
+      - payload
+      properties:
+        function:
+          type: string
+          enum:
+          - BEEP.postPayment
+          - BEEP.queryPayment
+          - BEEP.validateAccount
+          - BEEP.getBill
+          - BEEP.getBalance
+          - BEEP.refundPayment
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (KE, GH, TZ, UG, NG, ...).
+        payload:
+          type: object
+          required:
+          - credentials
+          - packet
+          properties:
+            credentials:
+              $ref: '#/components/schemas/Credentials'
+            packet:
+              $ref: '#/components/schemas/Packet'
     ExtraData:
       type: object
       description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
@@ -165,6 +172,26 @@ components:
         destinationAccountName:
           type: string
         destinationAccountNo:
+          type: string
+    Error:
+      type: object
+      properties:
+        authStatus:
+          type: object
+          properties:
+            authStatusCode:
+              type: integer
+            authStatusDescription:
+              type: string
+    Credentials:
+      type: object
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+        password:
           type: string
     PaymentResponse:
       type: object
@@ -191,16 +218,6 @@ components:
               beepTransactionID:
                 type: integer
                 format: int64
-    Error:
-      type: object
-      properties:
-        authStatus:
-          type: object
-          properties:
-            authStatusCode:
-              type: integer
-            authStatusDescription:
-              type: string
   examples:
     MobileMoneyPayoutExample:
       summary: Mobile money B2C payout to a Kenyan M-Pesa wallet
@@ -238,7 +255,7 @@ components:
           packet:
             serviceCode: BANK-PAYOUT
             MSISDN: '2348012345678'
-            accountNumber: '0123456789'
+            accountNumber: 0123456789
             payerTransactionID: TXN-2026-05-24-0002
             amount: 100000
             datePaymentReceived: '2026-05-24 10:20:00'
@@ -247,10 +264,21 @@ components:
             paymentMode: Bank
             customerNames: Chinedu Okafor
             extraData:
-              destinationBankCode: '058'
+              destinationBankCode: 058
               destinationBankName: GTBank
               destinationAccountName: Chinedu Okafor
-              destinationAccountNo: '0123456789'
+              destinationAccountNo: 0123456789
+    PendingAcknowledgementExample:
+      summary: Payout accepted, pending acknowledgement
+      value:
+        authStatus:
+          authStatusCode: 131
+          authStatusDescription: Authentication was successful
+        results:
+        - statusCode: 139
+          statusDescription: Payment pending acknowledgement
+          payerTransactionID: TXN-2026-05-24-0001
+          beepTransactionID: 9876543210
     AirtimeVendExample:
       summary: Airtime top-up
       value:
@@ -270,14 +298,20 @@ components:
             currencyCode: TZ
             countryCode: TZ
             paymentMode: Mobile
-    PendingAcknowledgementExample:
-      summary: Payout accepted, pending acknowledgement
-      value:
-        authStatus:
-          authStatusCode: 131
-          authStatusDescription: Authentication was successful
-        results:
-          - statusCode: 139
-            statusDescription: Payment pending acknowledgement
-            payerTransactionID: TXN-2026-05-24-0001
-            beepTransactionID: 9876543210
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Merchant apiKey issued in the Tingg integration dashboard.

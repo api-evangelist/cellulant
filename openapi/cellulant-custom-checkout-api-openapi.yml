@@ -1,0 +1,302 @@
+openapi: 3.1.0
+info:
+  title: Cellulant Tingg Checkout Acknowledgement Custom Checkout API
+  description: 'Tingg Checkout 3.0 — accept payments across 25+ African markets through
+
+    a single integration. Supports Express Checkout (hosted/modal) and Custom
+
+    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.
+
+    '
+  version: 3.0.0
+  contact:
+    name: Cellulant Developer Support
+    url: https://developer.tingg.africa
+    email: developer@cellulant.io
+  license:
+    name: Cellulant Terms of Service
+    url: https://www.cellulant.io/terms
+servers:
+- url: https://api.tingg.africa
+  description: Production
+- url: https://api-approval.tingg.africa
+  description: Sandbox
+security:
+- BearerAuth: []
+  ApiKeyAuth: []
+tags:
+- name: Custom Checkout
+  description: Host-to-host checkout flow for merchant-controlled UX.
+paths:
+  /v3/checkout-api/checkout-request/custom-request:
+    post:
+      summary: Initiate Custom Checkout Request
+      description: Initiate a host-to-host checkout where the merchant collects payment details and posts them to Tingg directly, retaining control of the UX.
+      operationId: initiateCustomCheckout
+      tags:
+      - Custom Checkout
+      parameters:
+      - $ref: '#/components/parameters/ApiKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomCheckoutRequest'
+      responses:
+        '200':
+          description: Custom checkout initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomCheckoutResponse'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+  /v3/checkout-api/checkout-request/charge:
+    post:
+      summary: Initiate Charge Request
+      description: Post a charge request to debit the customer for an initiated custom checkout. Used to push USSD/STK prompts or card charges from the merchant's backend.
+      operationId: initiateChargeRequest
+      tags:
+      - Custom Checkout
+      parameters:
+      - $ref: '#/components/parameters/ApiKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChargeRequest'
+      responses:
+        '200':
+          description: Charge accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChargeResponse'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+  /v3/checkout-api/query-status:
+    get:
+      summary: Query Request Status
+      description: Retrieve the current status of a previously raised checkout or charge request by merchant_transaction_id.
+      operationId: queryRequestStatus
+      tags:
+      - Custom Checkout
+      parameters:
+      - $ref: '#/components/parameters/ApiKey'
+      - name: merchant_transaction_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: service_code
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Status retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  schemas:
+    ChargeRequest:
+      type: object
+      required:
+      - checkout_request_id
+      - payment_option_code
+      - msisdn
+      properties:
+        checkout_request_id:
+          type: string
+        merchant_transaction_id:
+          type: string
+        service_code:
+          type: string
+        payment_option_code:
+          type: string
+        msisdn:
+          type: string
+        amount:
+          type: number
+          format: double
+        currency_code:
+          type: string
+    ExpressCheckoutRequest:
+      type: object
+      required:
+      - merchant_transaction_id
+      - service_code
+      - country_code
+      - currency_code
+      - request_amount
+      - callback_url
+      properties:
+        merchant_transaction_id:
+          type: string
+          description: Unique merchant transaction id.
+        service_code:
+          type: string
+          description: Tingg service code identifying the merchant's product line.
+        country_code:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (KE, UG, TZ, NG, GH, ...).
+        currency_code:
+          type: string
+          description: ISO 4217 currency code.
+        request_amount:
+          type: number
+          format: double
+        request_description:
+          type: string
+        account_number:
+          type: string
+        msisdn:
+          type: string
+          description: Customer phone in E.164 format.
+        customer_first_name:
+          type: string
+        customer_last_name:
+          type: string
+        customer_email:
+          type: string
+          format: email
+        due_date:
+          type: string
+          format: date-time
+        callback_url:
+          type: string
+          format: uri
+        success_redirect_url:
+          type: string
+          format: uri
+        fail_redirect_url:
+          type: string
+          format: uri
+        payment_option_code:
+          type: string
+        language_code:
+          type: string
+          example: en
+    CustomCheckoutRequest:
+      allOf:
+      - $ref: '#/components/schemas/ExpressCheckoutRequest'
+      - type: object
+        properties:
+          payer_client_code:
+            type: string
+          payer_mode:
+            type: string
+            enum:
+            - MOBILE
+            - BANK
+            - CARD
+    CustomCheckoutResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        checkout_request_id:
+          type: string
+        merchant_transaction_id:
+          type: string
+    Error:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+    ChargeResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        cpg_transaction_id:
+          type: string
+    StatusResponse:
+      type: object
+      properties:
+        checkout_request_id:
+          type: string
+        merchant_transaction_id:
+          type: string
+        request_status_code:
+          type: string
+        request_status_description:
+          type: string
+        request_amount:
+          type: number
+          format: double
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        failed_payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+    Payment:
+      type: object
+      properties:
+        cpg_transaction_id:
+          type: string
+        payer_transaction_id:
+          type: string
+        customer_name:
+          type: string
+        msisdn:
+          type: string
+        amount_paid:
+          type: number
+          format: double
+        currency_code:
+          type: string
+        payment_mode:
+          type: string
+        hub_overall_status:
+          type: string
+        payment_status:
+          type: string
+  parameters:
+    ApiKey:
+      name: apikey
+      in: header
+      required: true
+      description: Merchant API key issued in the Tingg integration dashboard.
+      schema:
+        type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Merchant apiKey issued in the Tingg integration dashboard.

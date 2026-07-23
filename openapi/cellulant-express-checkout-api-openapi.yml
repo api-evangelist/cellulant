@@ -1,0 +1,201 @@
+openapi: 3.1.0
+info:
+  title: Cellulant Tingg Checkout Acknowledgement Express Checkout API
+  description: 'Tingg Checkout 3.0 — accept payments across 25+ African markets through
+
+    a single integration. Supports Express Checkout (hosted/modal) and Custom
+
+    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.
+
+    '
+  version: 3.0.0
+  contact:
+    name: Cellulant Developer Support
+    url: https://developer.tingg.africa
+    email: developer@cellulant.io
+  license:
+    name: Cellulant Terms of Service
+    url: https://www.cellulant.io/terms
+servers:
+- url: https://api.tingg.africa
+  description: Production
+- url: https://api-approval.tingg.africa
+  description: Sandbox
+security:
+- BearerAuth: []
+  ApiKeyAuth: []
+tags:
+- name: Express Checkout
+  description: Create hosted checkout sessions returning short and long URLs.
+paths:
+  /v3/checkout-api/checkout-request/express-request:
+    post:
+      summary: Create Express Checkout Request
+      description: Create a hosted checkout session. The response includes both short_url and long_url that the merchant can present to the end-user (use short_url to avoid truncation in SMS or WhatsApp).
+      operationId: createExpressCheckout
+      tags:
+      - Express Checkout
+      parameters:
+      - $ref: '#/components/parameters/ApiKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpressCheckoutRequest'
+            examples:
+              ExpressCheckoutRequestExample:
+                $ref: '#/components/examples/ExpressCheckoutRequestExample'
+      responses:
+        '200':
+          description: Checkout created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpressCheckoutResponse'
+              examples:
+                ExpressCheckoutResponseExample:
+                  $ref: '#/components/examples/ExpressCheckoutResponseExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  schemas:
+    ExpressCheckoutResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        checkout_request_id:
+          type: string
+        long_url:
+          type: string
+          format: uri
+        short_url:
+          type: string
+          format: uri
+    ExpressCheckoutRequest:
+      type: object
+      required:
+      - merchant_transaction_id
+      - service_code
+      - country_code
+      - currency_code
+      - request_amount
+      - callback_url
+      properties:
+        merchant_transaction_id:
+          type: string
+          description: Unique merchant transaction id.
+        service_code:
+          type: string
+          description: Tingg service code identifying the merchant's product line.
+        country_code:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (KE, UG, TZ, NG, GH, ...).
+        currency_code:
+          type: string
+          description: ISO 4217 currency code.
+        request_amount:
+          type: number
+          format: double
+        request_description:
+          type: string
+        account_number:
+          type: string
+        msisdn:
+          type: string
+          description: Customer phone in E.164 format.
+        customer_first_name:
+          type: string
+        customer_last_name:
+          type: string
+        customer_email:
+          type: string
+          format: email
+        due_date:
+          type: string
+          format: date-time
+        callback_url:
+          type: string
+          format: uri
+        success_redirect_url:
+          type: string
+          format: uri
+        fail_redirect_url:
+          type: string
+          format: uri
+        payment_option_code:
+          type: string
+        language_code:
+          type: string
+          example: en
+    Error:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+  examples:
+    ExpressCheckoutRequestExample:
+      summary: Create express checkout for KES 1500
+      value:
+        merchant_transaction_id: MX-2026-05-24-0001
+        service_code: TINGGSVC001
+        country_code: KE
+        currency_code: KES
+        request_amount: 1500
+        request_description: Order
+        account_number: ACC-42
+        msisdn: '254712345678'
+        customer_first_name: Wanjiru
+        customer_last_name: Mwangi
+        customer_email: wanjiru@example.co.ke
+        callback_url: https://merchant.example.co.ke/tingg/ipn
+        success_redirect_url: https://merchant.example.co.ke/checkout/success
+        fail_redirect_url: https://merchant.example.co.ke/checkout/failed
+        language_code: en
+    ExpressCheckoutResponseExample:
+      summary: Express checkout created
+      value:
+        status_code: 200
+        status_description: Successful
+        checkout_request_id: '99887766'
+        short_url: https://online.tingg.africa/checkout/Abc12
+        long_url: https://online.tingg.africa/checkout/express?accessKey=abcdef1234567890...
+  parameters:
+    ApiKey:
+      name: apikey
+      in: header
+      required: true
+      description: Merchant API key issued in the Tingg integration dashboard.
+      schema:
+        type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Merchant apiKey issued in the Tingg integration dashboard.

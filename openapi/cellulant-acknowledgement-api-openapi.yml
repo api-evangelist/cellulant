@@ -1,0 +1,150 @@
+openapi: 3.1.0
+info:
+  title: Cellulant Tingg Checkout Acknowledgement API
+  description: 'Tingg Checkout 3.0 — accept payments across 25+ African markets through
+
+    a single integration. Supports Express Checkout (hosted/modal) and Custom
+
+    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.
+
+    '
+  version: 3.0.0
+  contact:
+    name: Cellulant Developer Support
+    url: https://developer.tingg.africa
+    email: developer@cellulant.io
+  license:
+    name: Cellulant Terms of Service
+    url: https://www.cellulant.io/terms
+servers:
+- url: https://api.tingg.africa
+  description: Production
+- url: https://api-approval.tingg.africa
+  description: Sandbox
+security:
+- BearerAuth: []
+  ApiKeyAuth: []
+tags:
+- name: Acknowledgement
+  description: Acknowledge successful or partial payments back to the platform.
+paths:
+  /v3/checkout-api/acknowledgement/request:
+    post:
+      summary: Acknowledge Payment
+      description: Send the final or partial delivered status for a checkout transaction back to the platform.
+      operationId: acknowledgePayment
+      tags:
+      - Acknowledgement
+      parameters:
+      - $ref: '#/components/parameters/ApiKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcknowledgementRequest'
+            examples:
+              AcknowledgementRequestExample:
+                $ref: '#/components/examples/AcknowledgementRequestExample'
+      responses:
+        '200':
+          description: Acknowledgement logged
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcknowledgementResponse'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  schemas:
+    AcknowledgementRequest:
+      type: object
+      required:
+      - acknowledgement_type
+      - acknowledgment_reference
+      - merchant_transaction_id
+      - service_code
+      - status_code
+      - currency_code
+      properties:
+        acknowledgement_amount:
+          type: number
+          format: double
+          description: Required when acknowledgement_type is Partial.
+        acknowledgement_type:
+          type: string
+          enum:
+          - Full
+          - Partial
+        acknowledgement_narration:
+          type: string
+        acknowledgment_reference:
+          type: string
+        merchant_transaction_id:
+          type: string
+        service_code:
+          type: string
+        status_code:
+          type: integer
+          description: 183 = successful, 180 = rejected, 188 = received, will be acknowledged later.
+        currency_code:
+          type: string
+    AcknowledgementResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+    Error:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+  parameters:
+    ApiKey:
+      name: apikey
+      in: header
+      required: true
+      description: Merchant API key issued in the Tingg integration dashboard.
+      schema:
+        type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  examples:
+    AcknowledgementRequestExample:
+      summary: Acknowledge a successful payment
+      value:
+        acknowledgement_type: Full
+        acknowledgement_narration: Goods delivered
+        acknowledgment_reference: ACK-001
+        merchant_transaction_id: MX-2026-05-24-0001
+        service_code: TINGGSVC001
+        status_code: 183
+        currency_code: KES
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Merchant apiKey issued in the Tingg integration dashboard.
