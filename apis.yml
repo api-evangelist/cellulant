@@ -10,9 +10,22 @@ description: >-
   global JSON endpoint), and Tingg Engage (transactional SMS). Cellulant ships official SDKs for PHP, Python, Node.js,
   .NET, JavaScript, plus a WooCommerce plugin.
 type: Index
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - finops
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Provider
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cellulant.png
 tags:
   - Payments
   - Mobile Money
@@ -34,88 +47,252 @@ created: '2026-05-24'
 modified: '2026-05-24'
 specificationVersion: '0.20'
 apis:
-  - aid: cellulant:cellulant-tingg-checkout-api
-    name: Cellulant Tingg Checkout API
-    tags:
-      - Payments
-      - Checkout
-      - Mobile Money
-      - Cards
-      - Bank Transfer
-      - Africa
-    humanURL: https://docs.tingg.africa/docs/introduction
-    properties:
-      - url: https://docs.tingg.africa/docs/introduction
-        type: Documentation
-      - url: https://docs.tingg.africa/docs/checkout-v3-express-checkout
-        type: Documentation
-      - url: https://docs.tingg.africa/docs/checkout-v3-custom-checkout
-        type: Documentation
-      - url: https://docs.tingg.africa/docs/checkout-v3-direct-card
-        type: Documentation
-      - url: https://docs.tingg.africa/reference/acknowledge-payments
-        type: Documentation
-      - url: https://docs.tingg.africa/reference/4-implement-webhook-via-callback-url-1
-        type: Webhooks
-      - url: openapi/cellulant-checkout-api-openapi.yml
-        type: OpenAPI
-      - url: json-schema/cellulant-checkout-request-schema.json
-        type: JSONSchema
-      - url: json-ld/cellulant-context.jsonld
-        type: JSONLD
-      - url: examples/cellulant-create-express-checkout-example.json
-        type: Examples
-    description: >-
-      Tingg Checkout 3.0 — a single integration to collect payments across 25+ African markets via Express Checkout
-      (hosted/modal), Custom Checkout (host-to-host), and the Direct Card API (3DS / 3DS-less / 2D). Supports mobile
-      money, cards, direct bank transfer, and 283+ payment methods.
-  - aid: cellulant:cellulant-tingg-payouts-api
-    name: Cellulant Tingg Payouts API
-    tags:
-      - Payments
-      - Payouts
-      - Disbursement
-      - Mobile Money
-      - Bank Transfer
-      - Airtime
-      - Africa
-    humanURL: https://docs.tingg.africa/docs/payouts-get-started
-    properties:
-      - url: https://docs.tingg.africa/docs/payouts-get-started
-        type: Documentation
-      - url: https://docs.tingg.africa/reference/postpayment
-        type: Documentation
-      - url: openapi/cellulant-payouts-api-openapi.yml
-        type: OpenAPI
-      - url: json-schema/cellulant-payout-packet-schema.json
-        type: JSONSchema
-      - url: examples/cellulant-post-payment-example.json
-        type: Examples
-    description: >-
-      Tingg Payouts (Beep) — a single global JSON endpoint that dispatches postPayment, queryPayment, validateAccount,
-      getBill, getBalance, and refundPayment functions for mobile-money B2C, bulk disbursement, cross-border bank
-      transfers, airtime/data vending, and bill payments (DSTV, GOTV, electricity, water) across 35 African countries.
-  - aid: cellulant:cellulant-tingg-engage-api
-    name: Cellulant Tingg Engage API
-    tags:
-      - SMS
-      - OTP
-      - Notifications
-      - Engagement
-      - Africa
-    humanURL: https://docs.tingg.africa/reference/engagement-service-api-v2
-    properties:
-      - url: https://docs.tingg.africa/reference/engagement-service-api-v2
-        type: Documentation
-      - url: https://docs.tingg.africa/reference/engagement-apis
-        type: Documentation
-      - url: openapi/cellulant-engage-api-openapi.yml
-        type: OpenAPI
-      - url: examples/cellulant-send-engagement-example.json
-        type: Examples
-    description: >-
-      Tingg Engage — single global entry point for transactional alerts. Queue OTP, transactional, and standard SMS with
-      templated parameters and receive per-message delivery callbacks.
+- aid: cellulant:cellulant-acknowledgement-api
+  name: Cellulant Acknowledgement API
+  description: Acknowledge successful or partial payments back to the platform.
+  humanURL: https://docs.tingg.africa/docs/introduction
+  tags:
+  - Acknowledgement
+  properties:
+  - type: OpenAPI
+    url: openapi/cellulant-acknowledgement-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/introduction
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-express-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-custom-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-direct-card
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/acknowledge-payments
+  - type: Webhooks
+    url: https://docs.tingg.africa/reference/4-implement-webhook-via-callback-url-1
+  - type: JSONSchema
+    url: json-schema/cellulant-checkout-request-schema.json
+  - type: JSONLD
+    url: json-ld/cellulant-context.jsonld
+  - type: Examples
+    url: examples/cellulant-create-express-checkout-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/payouts-get-started
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/postpayment
+  - type: JSONSchema
+    url: json-schema/cellulant-payout-packet-schema.json
+  - type: Examples
+    url: examples/cellulant-post-payment-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-service-api-v2
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-apis
+  - type: Examples
+    url: examples/cellulant-send-engagement-example.json
+- aid: cellulant:cellulant-authentication-api
+  name: Cellulant Authentication API
+  description: OAuth 2.0 access token issuance for Tingg API calls.
+  humanURL: https://docs.tingg.africa/docs/introduction
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/cellulant-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/introduction
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-express-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-custom-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-direct-card
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/acknowledge-payments
+  - type: Webhooks
+    url: https://docs.tingg.africa/reference/4-implement-webhook-via-callback-url-1
+  - type: JSONSchema
+    url: json-schema/cellulant-checkout-request-schema.json
+  - type: JSONLD
+    url: json-ld/cellulant-context.jsonld
+  - type: Examples
+    url: examples/cellulant-create-express-checkout-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/payouts-get-started
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/postpayment
+  - type: JSONSchema
+    url: json-schema/cellulant-payout-packet-schema.json
+  - type: Examples
+    url: examples/cellulant-post-payment-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-service-api-v2
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-apis
+  - type: Examples
+    url: examples/cellulant-send-engagement-example.json
+- aid: cellulant:cellulant-custom-checkout-api
+  name: Cellulant Custom Checkout API
+  description: Host-to-host checkout flow for merchant-controlled UX.
+  humanURL: https://docs.tingg.africa/docs/introduction
+  tags:
+  - Custom Checkout
+  properties:
+  - type: OpenAPI
+    url: openapi/cellulant-custom-checkout-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/introduction
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-express-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-custom-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-direct-card
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/acknowledge-payments
+  - type: Webhooks
+    url: https://docs.tingg.africa/reference/4-implement-webhook-via-callback-url-1
+  - type: JSONSchema
+    url: json-schema/cellulant-checkout-request-schema.json
+  - type: JSONLD
+    url: json-ld/cellulant-context.jsonld
+  - type: Examples
+    url: examples/cellulant-create-express-checkout-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/payouts-get-started
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/postpayment
+  - type: JSONSchema
+    url: json-schema/cellulant-payout-packet-schema.json
+  - type: Examples
+    url: examples/cellulant-post-payment-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-service-api-v2
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-apis
+  - type: Examples
+    url: examples/cellulant-send-engagement-example.json
+- aid: cellulant:cellulant-engagement-api
+  name: Cellulant Engagement API
+  description: Outbound SMS notifications and OTPs.
+  humanURL: https://docs.tingg.africa/docs/introduction
+  tags:
+  - Engagement
+  properties:
+  - type: OpenAPI
+    url: openapi/cellulant-engagement-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/introduction
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-express-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-custom-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-direct-card
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/acknowledge-payments
+  - type: Webhooks
+    url: https://docs.tingg.africa/reference/4-implement-webhook-via-callback-url-1
+  - type: JSONSchema
+    url: json-schema/cellulant-checkout-request-schema.json
+  - type: JSONLD
+    url: json-ld/cellulant-context.jsonld
+  - type: Examples
+    url: examples/cellulant-create-express-checkout-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/payouts-get-started
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/postpayment
+  - type: JSONSchema
+    url: json-schema/cellulant-payout-packet-schema.json
+  - type: Examples
+    url: examples/cellulant-post-payment-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-service-api-v2
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-apis
+  - type: Examples
+    url: examples/cellulant-send-engagement-example.json
+- aid: cellulant:cellulant-express-checkout-api
+  name: Cellulant Express Checkout API
+  description: Create hosted checkout sessions returning short and long URLs.
+  humanURL: https://docs.tingg.africa/docs/introduction
+  tags:
+  - Express Checkout
+  properties:
+  - type: OpenAPI
+    url: openapi/cellulant-express-checkout-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/introduction
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-express-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-custom-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-direct-card
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/acknowledge-payments
+  - type: Webhooks
+    url: https://docs.tingg.africa/reference/4-implement-webhook-via-callback-url-1
+  - type: JSONSchema
+    url: json-schema/cellulant-checkout-request-schema.json
+  - type: JSONLD
+    url: json-ld/cellulant-context.jsonld
+  - type: Examples
+    url: examples/cellulant-create-express-checkout-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/payouts-get-started
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/postpayment
+  - type: JSONSchema
+    url: json-schema/cellulant-payout-packet-schema.json
+  - type: Examples
+    url: examples/cellulant-post-payment-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-service-api-v2
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-apis
+  - type: Examples
+    url: examples/cellulant-send-engagement-example.json
+- aid: cellulant:cellulant-payments-api
+  name: Cellulant Payments API
+  description: Post payouts, queries, validations, balances, and refunds.
+  humanURL: https://docs.tingg.africa/docs/introduction
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/cellulant-payments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/introduction
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-express-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-custom-checkout
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/checkout-v3-direct-card
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/acknowledge-payments
+  - type: Webhooks
+    url: https://docs.tingg.africa/reference/4-implement-webhook-via-callback-url-1
+  - type: JSONSchema
+    url: json-schema/cellulant-checkout-request-schema.json
+  - type: JSONLD
+    url: json-ld/cellulant-context.jsonld
+  - type: Examples
+    url: examples/cellulant-create-express-checkout-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/docs/payouts-get-started
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/postpayment
+  - type: JSONSchema
+    url: json-schema/cellulant-payout-packet-schema.json
+  - type: Examples
+    url: examples/cellulant-post-payment-example.json
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-service-api-v2
+  - type: Documentation
+    url: https://docs.tingg.africa/reference/engagement-apis
+  - type: Examples
+    url: examples/cellulant-send-engagement-example.json
 common:
   - type: AgenticAccess
     url: agentic-access/cellulant-agentic-access.yml
