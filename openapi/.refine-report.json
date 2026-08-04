@@ -1,0 +1,24 @@
+{
+  "provider": "cellulant",
+  "sources": [
+    "cellulant-acknowledgement-api-openapi.yml",
+    "cellulant-authentication-api-openapi.yml",
+    "cellulant-custom-checkout-api-openapi.yml",
+    "cellulant-engagement-api-openapi.yml",
+    "cellulant-express-checkout-api-openapi.yml",
+    "cellulant-payments-api-openapi.yml"
+  ],
+  "outputs": [
+    "cellulant-acknowledgement-api-openapi.yml",
+    "cellulant-authentication-api-openapi.yml",
+    "cellulant-custom-checkout-api-openapi.yml",
+    "cellulant-engagement-api-openapi.yml",
+    "cellulant-express-checkout-api-openapi.yml",
+    "cellulant-payments-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
