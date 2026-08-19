@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cellulant Tingg Checkout Acknowledgement Express Checkout API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Express Checkout",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Express Checkout Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/v3/checkout-api/checkout-request/express-request",
+            "headers": [
+              {
+                "name": "apikey",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a hosted checkout session. The response includes both short_url and long_url that the merchant can present to the end-user (use short_url to avoid truncation in SMS or WhatsApp)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

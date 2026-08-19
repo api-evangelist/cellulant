@@ -1,0 +1,571 @@
+{
+  "item": [
+    {
+      "id": "ea49c426-153a-47b4-80db-23ca485ce69a",
+      "name": "Custom Checkout",
+      "description": {
+        "content": "Host-to-host checkout flow for merchant-controlled UX.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "60026404-7649-4349-92bd-04147ec1650a",
+          "name": "Initiate Custom Checkout Request",
+          "request": {
+            "name": "Initiate Custom Checkout Request",
+            "description": {
+              "content": "Initiate a host-to-host checkout where the merchant collects payment details and posts them to Tingg directly, retaining control of the UX.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "checkout-api",
+                "checkout-request",
+                "custom-request"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                "key": "apikey",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"merchant_transaction_id\": \"<string>\",\n  \"service_code\": \"<string>\",\n  \"country_code\": \"<string>\",\n  \"currency_code\": \"<string>\",\n  \"request_amount\": \"<double>\",\n  \"callback_url\": \"<uri>\",\n  \"request_description\": \"<string>\",\n  \"account_number\": \"<string>\",\n  \"msisdn\": \"<string>\",\n  \"customer_first_name\": \"<string>\",\n  \"customer_last_name\": \"<string>\",\n  \"customer_email\": \"<email>\",\n  \"due_date\": \"<dateTime>\",\n  \"success_redirect_url\": \"<uri>\",\n  \"fail_redirect_url\": \"<uri>\",\n  \"payment_option_code\": \"<string>\",\n  \"language_code\": \"<string>\",\n  \"payer_client_code\": \"<string>\",\n  \"payer_mode\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "eb73b41f-b3d3-40a2-98c0-9ed5c8868f3c",
+              "name": "Custom checkout initiated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "checkout-api",
+                    "checkout-request",
+                    "custom-request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                    "key": "apikey",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"merchant_transaction_id\": \"string\",\n  \"service_code\": \"string\",\n  \"country_code\": \"string\",\n  \"currency_code\": \"string\",\n  \"request_amount\": 5844.801250694176,\n  \"callback_url\": \"http://YWDxEIKTkEJxHntKEvsyYvpwRX.vayuQ88lCI,G.+5QoiUFvdBDKHy-acSP-+tbcjECiCU.aN2dRD8vDY,j5ALTKWwQ5PgXkkzxUM\",\n  \"request_description\": \"string\",\n  \"account_number\": \"string\",\n  \"msisdn\": \"string\",\n  \"customer_first_name\": \"string\",\n  \"customer_last_name\": \"string\",\n  \"customer_email\": \"vnWcvE9q@ewuLbWrXaZUOIuyKhCadXDkBaY.qdys\",\n  \"due_date\": \"2019-12-18T14:00:43.798Z\",\n  \"success_redirect_url\": \"http://cxerYHjiYNfPLdfaDNAjCzBZvlrqP.jarxyU++.R-Nj5xM,OjgMMKQS\",\n  \"fail_redirect_url\": \"https://kDYTvYARAkhpBgqpnA.sdaG10DHoQIpTrWNhuvKfVeTMgpN,VEN1cOk6DgBtDMwDwdXwkd0OhCsyXnIU\",\n  \"payment_option_code\": \"string\",\n  \"language_code\": \"en\",\n  \"payer_client_code\": \"<string>\",\n  \"payer_mode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status_code\": 5143,\n  \"checkout_request_id\": \"string\",\n  \"merchant_transaction_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85233b06-ee80-4c4b-bb60-50398d011040",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "checkout-api",
+                    "checkout-request",
+                    "custom-request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                    "key": "apikey",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"merchant_transaction_id\": \"string\",\n  \"service_code\": \"string\",\n  \"country_code\": \"string\",\n  \"currency_code\": \"string\",\n  \"request_amount\": 5844.801250694176,\n  \"callback_url\": \"http://YWDxEIKTkEJxHntKEvsyYvpwRX.vayuQ88lCI,G.+5QoiUFvdBDKHy-acSP-+tbcjECiCU.aN2dRD8vDY,j5ALTKWwQ5PgXkkzxUM\",\n  \"request_description\": \"string\",\n  \"account_number\": \"string\",\n  \"msisdn\": \"string\",\n  \"customer_first_name\": \"string\",\n  \"customer_last_name\": \"string\",\n  \"customer_email\": \"vnWcvE9q@ewuLbWrXaZUOIuyKhCadXDkBaY.qdys\",\n  \"due_date\": \"2019-12-18T14:00:43.798Z\",\n  \"success_redirect_url\": \"http://cxerYHjiYNfPLdfaDNAjCzBZvlrqP.jarxyU++.R-Nj5xM,OjgMMKQS\",\n  \"fail_redirect_url\": \"https://kDYTvYARAkhpBgqpnA.sdaG10DHoQIpTrWNhuvKfVeTMgpN,VEN1cOk6DgBtDMwDwdXwkd0OhCsyXnIU\",\n  \"payment_option_code\": \"string\",\n  \"language_code\": \"en\",\n  \"payer_client_code\": \"<string>\",\n  \"payer_mode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status_code\": 3003,\n  \"status_description\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2317fdd2-e233-4e97-995d-9cc805572fe1",
+          "name": "Initiate Charge Request",
+          "request": {
+            "name": "Initiate Charge Request",
+            "description": {
+              "content": "Post a charge request to debit the customer for an initiated custom checkout. Used to push USSD/STK prompts or card charges from the merchant's backend.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "checkout-api",
+                "checkout-request",
+                "charge"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                "key": "apikey",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"checkout_request_id\": \"<string>\",\n  \"payment_option_code\": \"<string>\",\n  \"msisdn\": \"<string>\",\n  \"merchant_transaction_id\": \"<string>\",\n  \"service_code\": \"<string>\",\n  \"amount\": \"<double>\",\n  \"currency_code\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1c18214a-e76e-4203-a1af-b225b4e7ade3",
+              "name": "Charge accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "checkout-api",
+                    "checkout-request",
+                    "charge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                    "key": "apikey",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"checkout_request_id\": \"<string>\",\n  \"payment_option_code\": \"<string>\",\n  \"msisdn\": \"<string>\",\n  \"merchant_transaction_id\": \"<string>\",\n  \"service_code\": \"<string>\",\n  \"amount\": \"<double>\",\n  \"currency_code\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status_code\": 449,\n  \"status_description\": \"string\",\n  \"cpg_transaction_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74234990-909a-4384-9c2e-89f02f515b1e",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "checkout-api",
+                    "checkout-request",
+                    "charge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                    "key": "apikey",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"checkout_request_id\": \"<string>\",\n  \"payment_option_code\": \"<string>\",\n  \"msisdn\": \"<string>\",\n  \"merchant_transaction_id\": \"<string>\",\n  \"service_code\": \"<string>\",\n  \"amount\": \"<double>\",\n  \"currency_code\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status_code\": 3960,\n  \"status_description\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3305978c-77b3-4804-8cd5-15d496dd2cb6",
+          "name": "Query Request Status",
+          "request": {
+            "name": "Query Request Status",
+            "description": {
+              "content": "Retrieve the current status of a previously raised checkout or charge request by merchant_transaction_id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "checkout-api",
+                "query-status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "merchant_transaction_id",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "service_code",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                "key": "apikey",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ed19d32f-d59c-4626-894b-a19b16b55b95",
+              "name": "Status retrieved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "checkout-api",
+                    "query-status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "merchant_transaction_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "service_code",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                    "key": "apikey",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"checkout_request_id\": \"string\",\n  \"merchant_transaction_id\": \"string\",\n  \"request_status_code\": \"string\",\n  \"request_status_description\": \"string\",\n  \"request_amount\": 9408.43402993167,\n  \"payments\": [\n    {\n      \"cpg_transaction_id\": \"string\",\n      \"payer_transaction_id\": \"string\",\n      \"customer_name\": \"string\",\n      \"msisdn\": \"string\",\n      \"amount_paid\": 9497.419955337407,\n      \"currency_code\": \"string\",\n      \"payment_mode\": \"string\",\n      \"hub_overall_status\": \"string\",\n      \"payment_status\": \"string\"\n    },\n    {\n      \"cpg_transaction_id\": \"string\",\n      \"payer_transaction_id\": \"string\",\n      \"customer_name\": \"string\",\n      \"msisdn\": \"string\",\n      \"amount_paid\": 6526.656441591472,\n      \"currency_code\": \"string\",\n      \"payment_mode\": \"string\",\n      \"hub_overall_status\": \"string\",\n      \"payment_status\": \"string\"\n    }\n  ],\n  \"failed_payments\": [\n    {\n      \"cpg_transaction_id\": \"string\",\n      \"payer_transaction_id\": \"string\",\n      \"customer_name\": \"string\",\n      \"msisdn\": \"string\",\n      \"amount_paid\": 6064.006072833678,\n      \"currency_code\": \"string\",\n      \"payment_mode\": \"string\",\n      \"hub_overall_status\": \"string\",\n      \"payment_status\": \"string\"\n    },\n    {\n      \"cpg_transaction_id\": \"string\",\n      \"payer_transaction_id\": \"string\",\n      \"customer_name\": \"string\",\n      \"msisdn\": \"string\",\n      \"amount_paid\": 6543.488902343148,\n      \"currency_code\": \"string\",\n      \"payment_mode\": \"string\",\n      \"hub_overall_status\": \"string\",\n      \"payment_status\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ac1f165-a79d-4751-a436-3e9e875e4f61",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "checkout-api",
+                    "query-status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "merchant_transaction_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "service_code",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                    "key": "apikey",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status_code\": 3960,\n  \"status_description\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.tingg.africa",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "38cff07f-0836-473c-b8fa-9a2077943408",
+    "name": "Cellulant Tingg Checkout Acknowledgement Custom Checkout API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tingg Checkout 3.0 — accept payments across 25+ African markets through\na single integration. Supports Express Checkout (hosted/modal) and Custom\nCheckout (host-to-host) for mobile money, cards, and direct bank transfer.\n\n\nContact Support:\n Name: Cellulant Developer Support\n Email: developer@cellulant.io",
+      "type": "text/plain"
+    }
+  }
+}

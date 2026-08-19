@@ -1,0 +1,95 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cellulant Tingg Checkout Acknowledgement Custom Checkout API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Custom Checkout",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate Custom Checkout Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/v3/checkout-api/checkout-request/custom-request",
+            "headers": [
+              {
+                "name": "apikey",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate a host-to-host checkout where the merchant collects payment details and posts them to Tingg directly, retaining control of the UX."
+        },
+        {
+          "info": {
+            "name": "Initiate Charge Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tingg.africa/v3/checkout-api/checkout-request/charge",
+            "headers": [
+              {
+                "name": "apikey",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Post a charge request to debit the customer for an initiated custom checkout. Used to push USSD/STK prompts or card charges from the merchant's backend."
+        },
+        {
+          "info": {
+            "name": "Query Request Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tingg.africa/v3/checkout-api/query-status",
+            "headers": [
+              {
+                "name": "apikey",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "merchant_transaction_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "service_code",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve the current status of a previously raised checkout or charge request by merchant_transaction_id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

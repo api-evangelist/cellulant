@@ -1,0 +1,197 @@
+{
+  "item": [
+    {
+      "id": "eb139b15-7c3c-4299-bc19-8695bf14f061",
+      "name": "Engagement",
+      "description": {
+        "content": "Outbound SMS notifications and OTPs.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0eaeea70-2ac0-46e1-be93-0e7ed29ead67",
+          "name": "Send Engagement Message",
+          "request": {
+            "name": "Send Engagement Message",
+            "description": {
+              "content": "Queue an SMS notification (OTP, transactional, or standard). Delivery status is reported via callback to the supplied callbackUrl.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "engagement"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notificationType\": \"<string>\",\n  \"channels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"referenceID\": \"<string>\",\n  \"smsDto\": {\n    \"msisdn\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"message\": \"<string>\",\n    \"params\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"senderID\": \"<string>\"\n  },\n  \"callbackUrl\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "061da4b7-2708-454e-bd56-d3f6956df04c",
+              "name": "Message queued",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "engagement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notificationType\": \"OTP\",\n  \"channels\": [\n    \"SMS\"\n  ],\n  \"referenceID\": \"ref-cas-123\",\n  \"callbackUrl\": \"https://merchant.example.co.ke/sms/callback\",\n  \"smsDto\": {\n    \"msisdn\": [\n      \"254712345678\"\n    ],\n    \"message\": \"Your Tingg OTP is ${code}. Valid for 5 minutes.\",\n    \"params\": {\n      \"code\": \"648291\"\n    },\n    \"senderID\": \"TINGG\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"transactionID\": \"8f6b2c80-43f7-4f78-b1d2-7a3a5d6c1e0a\",\n  \"statusCode\": 200,\n  \"message\": \"Message queued successfully.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2a9dd583-0984-4a1d-83a9-4a5d22349a9f",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "engagement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notificationType\": \"OTP\",\n  \"channels\": [\n    \"SMS\"\n  ],\n  \"referenceID\": \"ref-cas-123\",\n  \"callbackUrl\": \"https://merchant.example.co.ke/sms/callback\",\n  \"smsDto\": {\n    \"msisdn\": [\n      \"254712345678\"\n    ],\n    \"message\": \"Your Tingg OTP is ${code}. Valid for 5 minutes.\",\n    \"params\": {\n      \"code\": \"648291\"\n    },\n    \"senderID\": \"TINGG\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 9393,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.tingg.africa",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a0665426-b292-4a4c-a742-f666de263015",
+    "name": "Cellulant Tingg Checkout Acknowledgement Engagement API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tingg Checkout 3.0 — accept payments across 25+ African markets through\na single integration. Supports Express Checkout (hosted/modal) and Custom\nCheckout (host-to-host) for mobile money, cards, and direct bank transfer.\n\n\nContact Support:\n Name: Cellulant Developer Support\n Email: developer@cellulant.io",
+      "type": "text/plain"
+    }
+  }
+}

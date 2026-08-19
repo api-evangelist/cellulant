@@ -1,0 +1,218 @@
+{
+  "item": [
+    {
+      "id": "633bbd3c-0a60-41cd-9472-dea17668b3dd",
+      "name": "Acknowledgement",
+      "description": {
+        "content": "Acknowledge successful or partial payments back to the platform.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0df59840-a763-4ad1-bdd6-18bcfbe335de",
+          "name": "Acknowledge Payment",
+          "request": {
+            "name": "Acknowledge Payment",
+            "description": {
+              "content": "Send the final or partial delivered status for a checkout transaction back to the platform.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "checkout-api",
+                "acknowledgement",
+                "request"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                "key": "apikey",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"acknowledgement_type\": \"<string>\",\n  \"acknowledgment_reference\": \"<string>\",\n  \"merchant_transaction_id\": \"<string>\",\n  \"service_code\": \"<string>\",\n  \"status_code\": \"<integer>\",\n  \"currency_code\": \"<string>\",\n  \"acknowledgement_amount\": \"<double>\",\n  \"acknowledgement_narration\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e96e9176-9149-498c-a236-47c786b0158c",
+              "name": "Acknowledgement logged",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "checkout-api",
+                    "acknowledgement",
+                    "request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                    "key": "apikey",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"acknowledgement_type\": \"Full\",\n  \"acknowledgement_narration\": \"Goods delivered\",\n  \"acknowledgment_reference\": \"ACK-001\",\n  \"merchant_transaction_id\": \"MX-2026-05-24-0001\",\n  \"service_code\": \"TINGGSVC001\",\n  \"status_code\": 183,\n  \"currency_code\": \"KES\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status_code\": 3947,\n  \"status_description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fe8073a9-586a-4ba5-b12b-95daafc0afcd",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "checkout-api",
+                    "acknowledgement",
+                    "request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Merchant API key issued in the Tingg integration dashboard.",
+                    "key": "apikey",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"acknowledgement_type\": \"Full\",\n  \"acknowledgement_narration\": \"Goods delivered\",\n  \"acknowledgment_reference\": \"ACK-001\",\n  \"merchant_transaction_id\": \"MX-2026-05-24-0001\",\n  \"service_code\": \"TINGGSVC001\",\n  \"status_code\": 183,\n  \"currency_code\": \"KES\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status_code\": 7407,\n  \"status_description\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.tingg.africa",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e7a0e085-0ee3-4929-a27a-5dd73f6bc21d",
+    "name": "Cellulant Tingg Checkout Acknowledgement API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tingg Checkout 3.0 — accept payments across 25+ African markets through\na single integration. Supports Express Checkout (hosted/modal) and Custom\nCheckout (host-to-host) for mobile money, cards, and direct bank transfer.\n\n\nContact Support:\n Name: Cellulant Developer Support\n Email: developer@cellulant.io",
+      "type": "text/plain"
+    }
+  }
+}
