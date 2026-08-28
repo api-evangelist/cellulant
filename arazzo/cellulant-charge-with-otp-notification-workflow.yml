@@ -13,11 +13,14 @@ info:
     for checkout calls, the merchant apikey header.
   version: 1.0.0
 sourceDescriptions:
-- name: checkoutApi
-  url: ../openapi/cellulant-checkout-api-openapi.yml
+- name: authenticationApi
+  url: ../openapi/cellulant-authentication-api-openapi.yml
   type: openapi
-- name: engageApi
-  url: ../openapi/cellulant-engage-api-openapi.yml
+- name: customCheckoutApi
+  url: ../openapi/cellulant-custom-checkout-api-openapi.yml
+  type: openapi
+- name: engagementApi
+  url: ../openapi/cellulant-engagement-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: charge-with-otp-notification

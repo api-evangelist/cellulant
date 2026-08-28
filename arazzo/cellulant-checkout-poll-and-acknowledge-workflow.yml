@@ -12,8 +12,17 @@ info:
     token and merchant apikey header.
   version: 1.0.0
 sourceDescriptions:
-- name: checkoutApi
-  url: ../openapi/cellulant-checkout-api-openapi.yml
+- name: acknowledgementApi
+  url: ../openapi/cellulant-acknowledgement-api-openapi.yml
+  type: openapi
+- name: authenticationApi
+  url: ../openapi/cellulant-authentication-api-openapi.yml
+  type: openapi
+- name: customCheckoutApi
+  url: ../openapi/cellulant-custom-checkout-api-openapi.yml
+  type: openapi
+- name: expressCheckoutApi
+  url: ../openapi/cellulant-express-checkout-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: checkout-poll-and-acknowledge

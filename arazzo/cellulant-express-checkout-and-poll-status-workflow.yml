@@ -13,8 +13,14 @@ info:
     OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: checkoutApi
-  url: ../openapi/cellulant-checkout-api-openapi.yml
+- name: authenticationApi
+  url: ../openapi/cellulant-authentication-api-openapi.yml
+  type: openapi
+- name: customCheckoutApi
+  url: ../openapi/cellulant-custom-checkout-api-openapi.yml
+  type: openapi
+- name: expressCheckoutApi
+  url: ../openapi/cellulant-express-checkout-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: express-checkout-and-poll-status

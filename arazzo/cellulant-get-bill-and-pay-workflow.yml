@@ -12,8 +12,8 @@ info:
     the bill reference and settlement amount through the packet.
   version: 1.0.0
 sourceDescriptions:
-- name: payoutsApi
-  url: ../openapi/cellulant-payouts-api-openapi.yml
+- name: paymentsApi
+  url: ../openapi/cellulant-payments-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: get-bill-and-pay
