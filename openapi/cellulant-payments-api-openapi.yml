@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Cellulant Tingg Checkout Acknowledgement Payments API
-  description: 'Tingg Checkout 3.0 — accept payments across 25+ African markets through
+  title: Cellulant Tingg Payouts Payments API
+  description: 'Tingg Payouts (Beep Server) — send value to mobile money wallets, bank
 
-    a single integration. Supports Express Checkout (hosted/modal) and Custom
+    accounts, airtime/data, and bill payments across 35 African countries
 
-    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.
+    through a single global JSON endpoint.
 
     '
-  version: 3.0.0
+  version: 1.0.0
   contact:
     name: Cellulant Developer Support
     url: https://developer.tingg.africa
@@ -22,8 +22,7 @@ servers:
 - url: https://api-approval.tingg.africa
   description: Sandbox
 security:
-- BearerAuth: []
-  ApiKeyAuth: []
+- BasicAuth: []
 tags:
 - name: Payments
   description: Post payouts, queries, validations, balances, and refunds.
@@ -78,6 +77,97 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    PaymentResponse:
+      type: object
+      properties:
+        authStatus:
+          type: object
+          properties:
+            authStatusCode:
+              type: integer
+              example: 131
+            authStatusDescription:
+              type: string
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              statusCode:
+                type: integer
+              statusDescription:
+                type: string
+              payerTransactionID:
+                type: string
+              beepTransactionID:
+                type: integer
+                format: int64
+    PaymentRequest:
+      type: object
+      required:
+      - function
+      - countryCode
+      - payload
+      properties:
+        function:
+          type: string
+          enum:
+          - BEEP.postPayment
+          - BEEP.queryPayment
+          - BEEP.validateAccount
+          - BEEP.getBill
+          - BEEP.getBalance
+          - BEEP.refundPayment
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (KE, GH, TZ, UG, NG, ...).
+        payload:
+          type: object
+          required:
+          - credentials
+          - packet
+          properties:
+            credentials:
+              $ref: '#/components/schemas/Credentials'
+            packet:
+              $ref: '#/components/schemas/Packet'
+    ExtraData:
+      type: object
+      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
+      properties:
+        callbackUrl:
+          type: string
+          format: uri
+        pushToOriginator:
+          type: boolean
+        destinationBankCode:
+          type: string
+        destinationBankName:
+          type: string
+        destinationAccountName:
+          type: string
+        destinationAccountNo:
+          type: string
+    Credentials:
+      type: object
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Error:
+      type: object
+      properties:
+        authStatus:
+          type: object
+          properties:
+            authStatusCode:
+              type: integer
+            authStatusDescription:
+              type: string
     Packet:
       type: object
       required:
@@ -127,97 +217,13 @@ components:
           type: string
         extraData:
           $ref: '#/components/schemas/ExtraData'
-    PaymentRequest:
-      type: object
-      required:
-      - function
-      - countryCode
-      - payload
-      properties:
-        function:
-          type: string
-          enum:
-          - BEEP.postPayment
-          - BEEP.queryPayment
-          - BEEP.validateAccount
-          - BEEP.getBill
-          - BEEP.getBalance
-          - BEEP.refundPayment
-        countryCode:
-          type: string
-          description: ISO 3166-1 alpha-2 country code (KE, GH, TZ, UG, NG, ...).
-        payload:
-          type: object
-          required:
-          - credentials
-          - packet
-          properties:
-            credentials:
-              $ref: '#/components/schemas/Credentials'
-            packet:
-              $ref: '#/components/schemas/Packet'
-    ExtraData:
-      type: object
-      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
-      properties:
-        callbackUrl:
-          type: string
-          format: uri
-        pushToOriginator:
-          type: boolean
-        destinationBankCode:
-          type: string
-        destinationBankName:
-          type: string
-        destinationAccountName:
-          type: string
-        destinationAccountNo:
-          type: string
-    Error:
-      type: object
-      properties:
-        authStatus:
-          type: object
-          properties:
-            authStatusCode:
-              type: integer
-            authStatusDescription:
-              type: string
-    Credentials:
-      type: object
-      required:
-      - username
-      - password
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-    PaymentResponse:
-      type: object
-      properties:
-        authStatus:
-          type: object
-          properties:
-            authStatusCode:
-              type: integer
-              example: 131
-            authStatusDescription:
-              type: string
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              statusCode:
-                type: integer
-              statusDescription:
-                type: string
-              payerTransactionID:
-                type: string
-              beepTransactionID:
-                type: integer
-                format: int64
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   examples:
     MobileMoneyPayoutExample:
       summary: Mobile money B2C payout to a Kenyan M-Pesa wallet
@@ -243,31 +249,6 @@ components:
             extraData:
               callbackUrl: https://merchant.example.co.ke/tingg/payout-callback
               pushToOriginator: true
-    BankTransferExample:
-      summary: Cross-border bank payout
-      value:
-        function: BEEP.postPayment
-        countryCode: NG
-        payload:
-          credentials:
-            username: sandboxuser
-            password: sandboxpassword!
-          packet:
-            serviceCode: BANK-PAYOUT
-            MSISDN: '2348012345678'
-            accountNumber: 0123456789
-            payerTransactionID: TXN-2026-05-24-0002
-            amount: 100000
-            datePaymentReceived: '2026-05-24 10:20:00'
-            currencyCode: NG
-            countryCode: NG
-            paymentMode: Bank
-            customerNames: Chinedu Okafor
-            extraData:
-              destinationBankCode: 058
-              destinationBankName: GTBank
-              destinationAccountName: Chinedu Okafor
-              destinationAccountNo: 0123456789
     PendingAcknowledgementExample:
       summary: Payout accepted, pending acknowledgement
       value:
@@ -298,20 +279,33 @@ components:
             currencyCode: TZ
             countryCode: TZ
             paymentMode: Mobile
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    BankTransferExample:
+      summary: Cross-border bank payout
+      value:
+        function: BEEP.postPayment
+        countryCode: NG
+        payload:
+          credentials:
+            username: sandboxuser
+            password: sandboxpassword!
+          packet:
+            serviceCode: BANK-PAYOUT
+            MSISDN: '2348012345678'
+            accountNumber: 0123456789
+            payerTransactionID: TXN-2026-05-24-0002
+            amount: 100000
+            datePaymentReceived: '2026-05-24 10:20:00'
+            currencyCode: NG
+            countryCode: NG
+            paymentMode: Bank
+            customerNames: Chinedu Okafor
+            extraData:
+              destinationBankCode: 058
+              destinationBankName: GTBank
+              destinationAccountName: Chinedu Okafor
+              destinationAccountNo: 0123456789
   securitySchemes:
-    BearerAuth:
+    BasicAuth:
       type: http
-      scheme: bearer
-      bearerFormat: JWT
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: apikey
-      description: Merchant apiKey issued in the Tingg integration dashboard.
+      scheme: basic
+      description: Beep credentials supplied as Basic auth in addition to credentials in the payload.

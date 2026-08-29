@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Cellulant Tingg Checkout Acknowledgement Express Checkout API
+  title: Cellulant Tingg Checkout Express Checkout API
   description: 'Tingg Checkout 3.0 — accept payments across 25+ African markets through
 
     a single integration. Supports Express Checkout (hosted/modal) and Custom
@@ -59,22 +59,49 @@ paths:
         4XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
+  parameters:
+    ApiKey:
+      name: apikey
+      in: header
+      required: true
+      description: Merchant API key issued in the Tingg integration dashboard.
+      schema:
+        type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  examples:
+    ExpressCheckoutResponseExample:
+      summary: Express checkout created
+      value:
+        status_code: 200
+        status_description: Successful
+        checkout_request_id: '99887766'
+        short_url: https://online.tingg.africa/checkout/Abc12
+        long_url: https://online.tingg.africa/checkout/express?accessKey=abcdef1234567890...
+    ExpressCheckoutRequestExample:
+      summary: Create express checkout for KES 1500
+      value:
+        merchant_transaction_id: MX-2026-05-24-0001
+        service_code: TINGGSVC001
+        country_code: KE
+        currency_code: KES
+        request_amount: 1500
+        request_description: Order
+        account_number: ACC-42
+        msisdn: '254712345678'
+        customer_first_name: Wanjiru
+        customer_last_name: Mwangi
+        customer_email: wanjiru@example.co.ke
+        callback_url: https://merchant.example.co.ke/tingg/ipn
+        success_redirect_url: https://merchant.example.co.ke/checkout/success
+        fail_redirect_url: https://merchant.example.co.ke/checkout/failed
+        language_code: en
   schemas:
-    ExpressCheckoutResponse:
-      type: object
-      properties:
-        status_code:
-          type: integer
-        status_description:
-          type: string
-        checkout_request_id:
-          type: string
-        long_url:
-          type: string
-          format: uri
-        short_url:
-          type: string
-          format: uri
     ExpressCheckoutRequest:
       type: object
       required:
@@ -147,48 +174,21 @@ components:
                 type: string
               message:
                 type: string
-  examples:
-    ExpressCheckoutRequestExample:
-      summary: Create express checkout for KES 1500
-      value:
-        merchant_transaction_id: MX-2026-05-24-0001
-        service_code: TINGGSVC001
-        country_code: KE
-        currency_code: KES
-        request_amount: 1500
-        request_description: Order
-        account_number: ACC-42
-        msisdn: '254712345678'
-        customer_first_name: Wanjiru
-        customer_last_name: Mwangi
-        customer_email: wanjiru@example.co.ke
-        callback_url: https://merchant.example.co.ke/tingg/ipn
-        success_redirect_url: https://merchant.example.co.ke/checkout/success
-        fail_redirect_url: https://merchant.example.co.ke/checkout/failed
-        language_code: en
-    ExpressCheckoutResponseExample:
-      summary: Express checkout created
-      value:
-        status_code: 200
-        status_description: Successful
-        checkout_request_id: '99887766'
-        short_url: https://online.tingg.africa/checkout/Abc12
-        long_url: https://online.tingg.africa/checkout/express?accessKey=abcdef1234567890...
-  parameters:
-    ApiKey:
-      name: apikey
-      in: header
-      required: true
-      description: Merchant API key issued in the Tingg integration dashboard.
-      schema:
-        type: string
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    ExpressCheckoutResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        checkout_request_id:
+          type: string
+        long_url:
+          type: string
+          format: uri
+        short_url:
+          type: string
+          format: uri
   securitySchemes:
     BearerAuth:
       type: http

@@ -1,24 +1,33 @@
 {
   "provider": "cellulant",
   "sources": [
-    "cellulant-acknowledgement-api-openapi.yml",
-    "cellulant-authentication-api-openapi.yml",
-    "cellulant-custom-checkout-api-openapi.yml",
-    "cellulant-engagement-api-openapi.yml",
-    "cellulant-express-checkout-api-openapi.yml",
-    "cellulant-payments-api-openapi.yml"
+    "_original/cellulant-checkout-api-openapi.yml",
+    "_original/cellulant-engage-api-openapi.yml",
+    "_original/cellulant-payouts-api-openapi.yml"
   ],
   "outputs": [
     "cellulant-acknowledgement-api-openapi.yml",
     "cellulant-authentication-api-openapi.yml",
     "cellulant-custom-checkout-api-openapi.yml",
-    "cellulant-engagement-api-openapi.yml",
     "cellulant-express-checkout-api-openapi.yml",
+    "cellulant-engagement-api-openapi.yml",
     "cellulant-payments-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "cellulant-checkout-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "cellulant-engage-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "cellulant-payouts-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0"
+  ],
+  "skipped": [
+    "cellulant-acknowledgement-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cellulant-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cellulant-custom-checkout-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cellulant-engagement-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cellulant-express-checkout-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cellulant-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
