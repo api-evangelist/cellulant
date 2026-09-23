@@ -5,9 +5,7 @@ info:
 
     a single integration. Supports Express Checkout (hosted/modal) and Custom
 
-    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.
-
-    '
+    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.'
   version: 3.0.0
   contact:
     name: Cellulant Developer Support
@@ -59,21 +57,6 @@ paths:
         4XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  parameters:
-    ApiKey:
-      name: apikey
-      in: header
-      required: true
-      description: Merchant API key issued in the Tingg integration dashboard.
-      schema:
-        type: string
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   examples:
     ExpressCheckoutResponseExample:
       summary: Express checkout created
@@ -101,7 +84,30 @@ components:
         success_redirect_url: https://merchant.example.co.ke/checkout/success
         fail_redirect_url: https://merchant.example.co.ke/checkout/failed
         language_code: en
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
     ExpressCheckoutRequest:
       type: object
       required:
@@ -158,22 +164,6 @@ components:
         language_code:
           type: string
           example: en
-    Error:
-      type: object
-      properties:
-        status_code:
-          type: integer
-        status_description:
-          type: string
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
     ExpressCheckoutResponse:
       type: object
       properties:
@@ -189,6 +179,14 @@ components:
         short_url:
           type: string
           format: uri
+  parameters:
+    ApiKey:
+      name: apikey
+      in: header
+      required: true
+      description: Merchant API key issued in the Tingg integration dashboard.
+      schema:
+        type: string
   securitySchemes:
     BearerAuth:
       type: http

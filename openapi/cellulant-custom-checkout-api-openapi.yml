@@ -5,9 +5,7 @@ info:
 
     a single integration. Supports Express Checkout (hosted/modal) and Custom
 
-    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.
-
-    '
+    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.'
   version: 3.0.0
   contact:
     name: Cellulant Developer Support
@@ -106,50 +104,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   schemas:
-    ChargeRequest:
-      type: object
-      required:
-      - checkout_request_id
-      - payment_option_code
-      - msisdn
-      properties:
-        checkout_request_id:
-          type: string
-        merchant_transaction_id:
-          type: string
-        service_code:
-          type: string
-        payment_option_code:
-          type: string
-        msisdn:
-          type: string
-        amount:
-          type: number
-          format: double
-        currency_code:
-          type: string
-    Payment:
-      type: object
-      properties:
-        cpg_transaction_id:
-          type: string
-        payer_transaction_id:
-          type: string
-        customer_name:
-          type: string
-        msisdn:
-          type: string
-        amount_paid:
-          type: number
-          format: double
-        currency_code:
-          type: string
-        payment_mode:
-          type: string
-        hub_overall_status:
-          type: string
-        payment_status:
-          type: string
     ChargeResponse:
       type: object
       properties:
@@ -159,15 +113,22 @@ components:
           type: string
         cpg_transaction_id:
           type: string
-    CustomCheckoutResponse:
+    Error:
       type: object
       properties:
         status_code:
           type: integer
-        checkout_request_id:
+        status_description:
           type: string
-        merchant_transaction_id:
-          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
     ExpressCheckoutRequest:
       type: object
       required:
@@ -224,6 +185,15 @@ components:
         language_code:
           type: string
           example: en
+    CustomCheckoutResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        checkout_request_id:
+          type: string
+        merchant_transaction_id:
+          type: string
     StatusResponse:
       type: object
       properties:
@@ -259,22 +229,57 @@ components:
             - MOBILE
             - BANK
             - CARD
-    Error:
+    ChargeRequest:
+      type: object
+      required:
+      - checkout_request_id
+      - payment_option_code
+      - msisdn
+      properties:
+        checkout_request_id:
+          type: string
+        merchant_transaction_id:
+          type: string
+        service_code:
+          type: string
+        payment_option_code:
+          type: string
+        msisdn:
+          type: string
+        amount:
+          type: number
+          format: double
+        currency_code:
+          type: string
+    Payment:
       type: object
       properties:
-        status_code:
-          type: integer
-        status_description:
+        cpg_transaction_id:
           type: string
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
+        payer_transaction_id:
+          type: string
+        customer_name:
+          type: string
+        msisdn:
+          type: string
+        amount_paid:
+          type: number
+          format: double
+        currency_code:
+          type: string
+        payment_mode:
+          type: string
+        hub_overall_status:
+          type: string
+        payment_status:
+          type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     ApiKey:
       name: apikey
@@ -283,13 +288,6 @@ components:
       description: Merchant API key issued in the Tingg integration dashboard.
       schema:
         type: string
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     BearerAuth:
       type: http

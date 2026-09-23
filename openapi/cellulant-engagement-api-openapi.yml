@@ -5,9 +5,7 @@ info:
 
     Send SMS (OTP, transactional, standard) to customers with templated
 
-    parameters and delivery status callbacks.
-
-    '
+    parameters and delivery status callbacks.'
   version: 2.0.0
   contact:
     name: Cellulant Developer Support
@@ -54,12 +52,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   examples:
-    EngagementResponseExample:
-      summary: Message queued
-      value:
-        transactionID: 8f6b2c80-43f7-4f78-b1d2-7a3a5d6c1e0a
-        statusCode: 200
-        message: Message queued successfully.
     SmsEngagementExample:
       summary: Send a templated OTP
       value:
@@ -75,7 +67,38 @@ components:
           params:
             code: '648291'
           senderID: TINGG
+    EngagementResponseExample:
+      summary: Message queued
+      value:
+        transactionID: 8f6b2c80-43f7-4f78-b1d2-7a3a5d6c1e0a
+        statusCode: 200
+        message: Message queued successfully.
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        message:
+          type: string
+    EngagementResponse:
+      type: object
+      properties:
+        transactionID:
+          type: string
+          format: uuid
+        statusCode:
+          type: integer
+          example: 200
+        message:
+          type: string
     EngagementRequest:
       type: object
       required:
@@ -104,17 +127,6 @@ components:
           format: uri
         smsDto:
           $ref: '#/components/schemas/SmsDto'
-    EngagementResponse:
-      type: object
-      properties:
-        transactionID:
-          type: string
-          format: uuid
-        statusCode:
-          type: integer
-          example: 200
-        message:
-          type: string
     SmsDto:
       type: object
       required:
@@ -135,20 +147,6 @@ components:
             type: string
         senderID:
           type: string
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        message:
-          type: string
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     BearerAuth:
       type: http

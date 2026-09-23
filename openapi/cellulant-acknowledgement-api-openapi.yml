@@ -5,9 +5,7 @@ info:
 
     a single integration. Supports Express Checkout (hosted/modal) and Custom
 
-    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.
-
-    '
+    Checkout (host-to-host) for mobile money, cards, and direct bank transfer.'
   version: 3.0.0
   contact:
     name: Cellulant Developer Support
@@ -112,21 +110,6 @@ components:
                 type: string
               message:
                 type: string
-  parameters:
-    ApiKey:
-      name: apikey
-      in: header
-      required: true
-      description: Merchant API key issued in the Tingg integration dashboard.
-      schema:
-        type: string
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   examples:
     AcknowledgementRequestExample:
       summary: Acknowledge a successful payment
@@ -138,6 +121,21 @@ components:
         service_code: TINGGSVC001
         status_code: 183
         currency_code: KES
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    ApiKey:
+      name: apikey
+      in: header
+      required: true
+      description: Merchant API key issued in the Tingg integration dashboard.
+      schema:
+        type: string
   securitySchemes:
     BearerAuth:
       type: http

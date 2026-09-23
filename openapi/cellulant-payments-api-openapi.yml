@@ -5,9 +5,7 @@ info:
 
     accounts, airtime/data, and bill payments across 35 African countries
 
-    through a single global JSON endpoint.
-
-    '
+    through a single global JSON endpoint.'
   version: 1.0.0
   contact:
     name: Cellulant Developer Support
@@ -38,9 +36,7 @@ paths:
 
         Used for mobile money B2C, bulk disbursement, bank transfers, airtime/data
 
-        vending, and bill payments (DSTV, GOTV, electricity, water).
-
-        '
+        vending, and bill payments (DSTV, GOTV, electricity, water).'
       operationId: postPayment
       tags:
       - Payments
@@ -77,31 +73,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    PaymentResponse:
-      type: object
-      properties:
-        authStatus:
-          type: object
-          properties:
-            authStatusCode:
-              type: integer
-              example: 131
-            authStatusDescription:
-              type: string
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              statusCode:
-                type: integer
-              statusDescription:
-                type: string
-              payerTransactionID:
-                type: string
-              beepTransactionID:
-                type: integer
-                format: int64
     PaymentRequest:
       type: object
       required:
@@ -131,33 +102,6 @@ components:
               $ref: '#/components/schemas/Credentials'
             packet:
               $ref: '#/components/schemas/Packet'
-    ExtraData:
-      type: object
-      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
-      properties:
-        callbackUrl:
-          type: string
-          format: uri
-        pushToOriginator:
-          type: boolean
-        destinationBankCode:
-          type: string
-        destinationBankName:
-          type: string
-        destinationAccountName:
-          type: string
-        destinationAccountNo:
-          type: string
-    Credentials:
-      type: object
-      required:
-      - username
-      - password
-      properties:
-        username:
-          type: string
-        password:
-          type: string
     Error:
       type: object
       properties:
@@ -168,6 +112,31 @@ components:
               type: integer
             authStatusDescription:
               type: string
+    PaymentResponse:
+      type: object
+      properties:
+        authStatus:
+          type: object
+          properties:
+            authStatusCode:
+              type: integer
+              example: 131
+            authStatusDescription:
+              type: string
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              statusCode:
+                type: integer
+              statusDescription:
+                type: string
+              payerTransactionID:
+                type: string
+              beepTransactionID:
+                type: integer
+                format: int64
     Packet:
       type: object
       required:
@@ -217,38 +186,34 @@ components:
           type: string
         extraData:
           $ref: '#/components/schemas/ExtraData'
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Credentials:
+      type: object
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    ExtraData:
+      type: object
+      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
+      properties:
+        callbackUrl:
+          type: string
+          format: uri
+        pushToOriginator:
+          type: boolean
+        destinationBankCode:
+          type: string
+        destinationBankName:
+          type: string
+        destinationAccountName:
+          type: string
+        destinationAccountNo:
+          type: string
   examples:
-    MobileMoneyPayoutExample:
-      summary: Mobile money B2C payout to a Kenyan M-Pesa wallet
-      value:
-        function: BEEP.postPayment
-        countryCode: KE
-        payload:
-          credentials:
-            username: sandboxuser
-            password: sandboxpassword!
-          packet:
-            serviceCode: MPESA-B2C
-            MSISDN: '254712345678'
-            accountNumber: '254712345678'
-            payerTransactionID: TXN-2026-05-24-0001
-            amount: 2500
-            datePaymentReceived: '2026-05-24 10:15:00'
-            currencyCode: KE
-            countryCode: KE
-            narration: Vendor payout — May invoice
-            paymentMode: Mobile
-            customerNames: Wanjiru Mwangi
-            extraData:
-              callbackUrl: https://merchant.example.co.ke/tingg/payout-callback
-              pushToOriginator: true
     PendingAcknowledgementExample:
       summary: Payout accepted, pending acknowledgement
       value:
@@ -279,6 +244,30 @@ components:
             currencyCode: TZ
             countryCode: TZ
             paymentMode: Mobile
+    MobileMoneyPayoutExample:
+      summary: Mobile money B2C payout to a Kenyan M-Pesa wallet
+      value:
+        function: BEEP.postPayment
+        countryCode: KE
+        payload:
+          credentials:
+            username: sandboxuser
+            password: sandboxpassword!
+          packet:
+            serviceCode: MPESA-B2C
+            MSISDN: '254712345678'
+            accountNumber: '254712345678'
+            payerTransactionID: TXN-2026-05-24-0001
+            amount: 2500
+            datePaymentReceived: '2026-05-24 10:15:00'
+            currencyCode: KE
+            countryCode: KE
+            narration: Vendor payout — May invoice
+            paymentMode: Mobile
+            customerNames: Wanjiru Mwangi
+            extraData:
+              callbackUrl: https://merchant.example.co.ke/tingg/payout-callback
+              pushToOriginator: true
     BankTransferExample:
       summary: Cross-border bank payout
       value:
@@ -304,6 +293,13 @@ components:
               destinationBankName: GTBank
               destinationAccountName: Chinedu Okafor
               destinationAccountNo: 0123456789
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     BasicAuth:
       type: http
