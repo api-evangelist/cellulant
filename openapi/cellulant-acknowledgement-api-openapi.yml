@@ -55,13 +55,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   schemas:
-    AcknowledgementResponse:
-      type: object
-      properties:
-        status_code:
-          type: integer
-        status_description:
-          type: string
     AcknowledgementRequest:
       type: object
       required:
@@ -94,6 +87,13 @@ components:
           description: 183 = successful, 180 = rejected, 188 = received, will be acknowledged later.
         currency_code:
           type: string
+    AcknowledgementResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
     Error:
       type: object
       properties:
@@ -110,6 +110,13 @@ components:
                 type: string
               message:
                 type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   examples:
     AcknowledgementRequestExample:
       summary: Acknowledge a successful payment
@@ -121,13 +128,6 @@ components:
         service_code: TINGGSVC001
         status_code: 183
         currency_code: KES
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
     ApiKey:
       name: apikey

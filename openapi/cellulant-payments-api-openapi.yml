@@ -102,41 +102,33 @@ components:
               $ref: '#/components/schemas/Credentials'
             packet:
               $ref: '#/components/schemas/Packet'
-    Error:
+    ExtraData:
       type: object
+      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
       properties:
-        authStatus:
-          type: object
-          properties:
-            authStatusCode:
-              type: integer
-            authStatusDescription:
-              type: string
-    PaymentResponse:
+        callbackUrl:
+          type: string
+          format: uri
+        pushToOriginator:
+          type: boolean
+        destinationBankCode:
+          type: string
+        destinationBankName:
+          type: string
+        destinationAccountName:
+          type: string
+        destinationAccountNo:
+          type: string
+    Credentials:
       type: object
+      required:
+      - username
+      - password
       properties:
-        authStatus:
-          type: object
-          properties:
-            authStatusCode:
-              type: integer
-              example: 131
-            authStatusDescription:
-              type: string
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              statusCode:
-                type: integer
-              statusDescription:
-                type: string
-              payerTransactionID:
-                type: string
-              beepTransactionID:
-                type: integer
-                format: int64
+        username:
+          type: string
+        password:
+          type: string
     Packet:
       type: object
       required:
@@ -186,34 +178,66 @@ components:
           type: string
         extraData:
           $ref: '#/components/schemas/ExtraData'
-    Credentials:
+    PaymentResponse:
       type: object
-      required:
-      - username
-      - password
       properties:
-        username:
-          type: string
-        password:
-          type: string
-    ExtraData:
+        authStatus:
+          type: object
+          properties:
+            authStatusCode:
+              type: integer
+              example: 131
+            authStatusDescription:
+              type: string
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              statusCode:
+                type: integer
+              statusDescription:
+                type: string
+              payerTransactionID:
+                type: string
+              beepTransactionID:
+                type: integer
+                format: int64
+    Error:
       type: object
-      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
       properties:
-        callbackUrl:
-          type: string
-          format: uri
-        pushToOriginator:
-          type: boolean
-        destinationBankCode:
-          type: string
-        destinationBankName:
-          type: string
-        destinationAccountName:
-          type: string
-        destinationAccountNo:
-          type: string
+        authStatus:
+          type: object
+          properties:
+            authStatusCode:
+              type: integer
+            authStatusDescription:
+              type: string
   examples:
+    MobileMoneyPayoutExample:
+      summary: Mobile money B2C payout to a Kenyan M-Pesa wallet
+      value:
+        function: BEEP.postPayment
+        countryCode: KE
+        payload:
+          credentials:
+            username: sandboxuser
+            password: sandboxpassword!
+          packet:
+            serviceCode: MPESA-B2C
+            MSISDN: '254712345678'
+            accountNumber: '254712345678'
+            payerTransactionID: TXN-2026-05-24-0001
+            amount: 2500
+            datePaymentReceived: '2026-05-24 10:15:00'
+            currencyCode: KE
+            countryCode: KE
+            narration: Vendor payout — May invoice
+            paymentMode: Mobile
+            customerNames: Wanjiru Mwangi
+            extraData:
+              callbackUrl: https://merchant.example.co.ke/tingg/payout-callback
+              pushToOriginator: true
     PendingAcknowledgementExample:
       summary: Payout accepted, pending acknowledgement
       value:
@@ -244,30 +268,6 @@ components:
             currencyCode: TZ
             countryCode: TZ
             paymentMode: Mobile
-    MobileMoneyPayoutExample:
-      summary: Mobile money B2C payout to a Kenyan M-Pesa wallet
-      value:
-        function: BEEP.postPayment
-        countryCode: KE
-        payload:
-          credentials:
-            username: sandboxuser
-            password: sandboxpassword!
-          packet:
-            serviceCode: MPESA-B2C
-            MSISDN: '254712345678'
-            accountNumber: '254712345678'
-            payerTransactionID: TXN-2026-05-24-0001
-            amount: 2500
-            datePaymentReceived: '2026-05-24 10:15:00'
-            currencyCode: KE
-            countryCode: KE
-            narration: Vendor payout — May invoice
-            paymentMode: Mobile
-            customerNames: Wanjiru Mwangi
-            extraData:
-              callbackUrl: https://merchant.example.co.ke/tingg/payout-callback
-              pushToOriginator: true
     BankTransferExample:
       summary: Cross-border bank payout
       value:

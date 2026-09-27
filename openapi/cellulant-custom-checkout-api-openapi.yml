@@ -104,31 +104,28 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   schemas:
-    ChargeResponse:
+    StatusResponse:
       type: object
       properties:
-        status_code:
-          type: integer
-        status_description:
+        checkout_request_id:
           type: string
-        cpg_transaction_id:
+        merchant_transaction_id:
           type: string
-    Error:
-      type: object
-      properties:
-        status_code:
-          type: integer
-        status_description:
+        request_status_code:
           type: string
-        errors:
+        request_status_description:
+          type: string
+        request_amount:
+          type: number
+          format: double
+        payments:
           type: array
           items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
+            $ref: '#/components/schemas/Payment'
+        failed_payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
     ExpressCheckoutRequest:
       type: object
       required:
@@ -185,50 +182,6 @@ components:
         language_code:
           type: string
           example: en
-    CustomCheckoutResponse:
-      type: object
-      properties:
-        status_code:
-          type: integer
-        checkout_request_id:
-          type: string
-        merchant_transaction_id:
-          type: string
-    StatusResponse:
-      type: object
-      properties:
-        checkout_request_id:
-          type: string
-        merchant_transaction_id:
-          type: string
-        request_status_code:
-          type: string
-        request_status_description:
-          type: string
-        request_amount:
-          type: number
-          format: double
-        payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Payment'
-        failed_payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Payment'
-    CustomCheckoutRequest:
-      allOf:
-      - $ref: '#/components/schemas/ExpressCheckoutRequest'
-      - type: object
-        properties:
-          payer_client_code:
-            type: string
-          payer_mode:
-            type: string
-            enum:
-            - MOBILE
-            - BANK
-            - CARD
     ChargeRequest:
       type: object
       required:
@@ -250,6 +203,24 @@ components:
           type: number
           format: double
         currency_code:
+          type: string
+    ChargeResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        cpg_transaction_id:
+          type: string
+    CustomCheckoutResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        checkout_request_id:
+          type: string
+        merchant_transaction_id:
           type: string
     Payment:
       type: object
@@ -273,6 +244,35 @@ components:
           type: string
         payment_status:
           type: string
+    Error:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+    CustomCheckoutRequest:
+      allOf:
+      - $ref: '#/components/schemas/ExpressCheckoutRequest'
+      - type: object
+        properties:
+          payer_client_code:
+            type: string
+          payer_mode:
+            type: string
+            enum:
+            - MOBILE
+            - BANK
+            - CARD
   responses:
     ErrorResponse:
       description: Error response
