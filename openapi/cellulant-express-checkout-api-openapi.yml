@@ -145,14 +145,15 @@ components:
                 type: string
               message:
                 type: string
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   examples:
+    ExpressCheckoutResponseExample:
+      summary: Express checkout created
+      value:
+        status_code: 200
+        status_description: Successful
+        checkout_request_id: '99887766'
+        short_url: https://online.tingg.africa/checkout/Abc12
+        long_url: https://online.tingg.africa/checkout/express?accessKey=abcdef1234567890...
     ExpressCheckoutRequestExample:
       summary: Create express checkout for KES 1500
       value:
@@ -171,14 +172,6 @@ components:
         success_redirect_url: https://merchant.example.co.ke/checkout/success
         fail_redirect_url: https://merchant.example.co.ke/checkout/failed
         language_code: en
-    ExpressCheckoutResponseExample:
-      summary: Express checkout created
-      value:
-        status_code: 200
-        status_description: Successful
-        checkout_request_id: '99887766'
-        short_url: https://online.tingg.africa/checkout/Abc12
-        long_url: https://online.tingg.africa/checkout/express?accessKey=abcdef1234567890...
   parameters:
     ApiKey:
       name: apikey
@@ -187,6 +180,13 @@ components:
       description: Merchant API key issued in the Tingg integration dashboard.
       schema:
         type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     BearerAuth:
       type: http

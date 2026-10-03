@@ -104,6 +104,24 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   schemas:
+    CustomCheckoutResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        checkout_request_id:
+          type: string
+        merchant_transaction_id:
+          type: string
+    ChargeResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        status_description:
+          type: string
+        cpg_transaction_id:
+          type: string
     StatusResponse:
       type: object
       properties:
@@ -126,6 +144,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Payment'
+    CustomCheckoutRequest:
+      allOf:
+      - $ref: '#/components/schemas/ExpressCheckoutRequest'
+      - type: object
+        properties:
+          payer_client_code:
+            type: string
+          payer_mode:
+            type: string
+            enum:
+            - MOBILE
+            - BANK
+            - CARD
     ExpressCheckoutRequest:
       type: object
       required:
@@ -204,24 +235,6 @@ components:
           format: double
         currency_code:
           type: string
-    ChargeResponse:
-      type: object
-      properties:
-        status_code:
-          type: integer
-        status_description:
-          type: string
-        cpg_transaction_id:
-          type: string
-    CustomCheckoutResponse:
-      type: object
-      properties:
-        status_code:
-          type: integer
-        checkout_request_id:
-          type: string
-        merchant_transaction_id:
-          type: string
     Payment:
       type: object
       properties:
@@ -260,26 +273,6 @@ components:
                 type: string
               message:
                 type: string
-    CustomCheckoutRequest:
-      allOf:
-      - $ref: '#/components/schemas/ExpressCheckoutRequest'
-      - type: object
-        properties:
-          payer_client_code:
-            type: string
-          payer_mode:
-            type: string
-            enum:
-            - MOBILE
-            - BANK
-            - CARD
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
     ApiKey:
       name: apikey
@@ -288,6 +281,13 @@ components:
       description: Merchant API key issued in the Tingg integration dashboard.
       schema:
         type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     BearerAuth:
       type: http
