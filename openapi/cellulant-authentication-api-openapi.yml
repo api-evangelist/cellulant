@@ -71,17 +71,6 @@ components:
           type: string
         client_secret:
           type: string
-    TokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-          example: Bearer
-        expires_in:
-          type: integer
-          description: Lifetime in seconds.
     Error:
       type: object
       properties:
@@ -98,19 +87,30 @@ components:
                 type: string
               message:
                 type: string
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Lifetime in seconds.
   examples:
-    TokenResponseExample:
-      summary: OAuth token response
-      value:
-        access_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
-        token_type: Bearer
-        expires_in: 3599
     TokenRequestExample:
       summary: OAuth token request
       value:
         grant_type: client_credentials
         client_id: 1234567890abcdef
         client_secret: clsec_abcdefghijklmnopqr
+    TokenResponseExample:
+      summary: OAuth token response
+      value:
+        access_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
+        token_type: Bearer
+        expires_in: 3599
   responses:
     ErrorResponse:
       description: Error response

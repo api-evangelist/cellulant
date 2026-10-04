@@ -104,15 +104,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   schemas:
-    CustomCheckoutResponse:
-      type: object
-      properties:
-        status_code:
-          type: integer
-        checkout_request_id:
-          type: string
-        merchant_transaction_id:
-          type: string
     ChargeResponse:
       type: object
       properties:
@@ -213,27 +204,14 @@ components:
         language_code:
           type: string
           example: en
-    ChargeRequest:
+    CustomCheckoutResponse:
       type: object
-      required:
-      - checkout_request_id
-      - payment_option_code
-      - msisdn
       properties:
+        status_code:
+          type: integer
         checkout_request_id:
           type: string
         merchant_transaction_id:
-          type: string
-        service_code:
-          type: string
-        payment_option_code:
-          type: string
-        msisdn:
-          type: string
-        amount:
-          type: number
-          format: double
-        currency_code:
           type: string
     Payment:
       type: object
@@ -273,6 +251,28 @@ components:
                 type: string
               message:
                 type: string
+    ChargeRequest:
+      type: object
+      required:
+      - checkout_request_id
+      - payment_option_code
+      - msisdn
+      properties:
+        checkout_request_id:
+          type: string
+        merchant_transaction_id:
+          type: string
+        service_code:
+          type: string
+        payment_option_code:
+          type: string
+        msisdn:
+          type: string
+        amount:
+          type: number
+          format: double
+        currency_code:
+          type: string
   parameters:
     ApiKey:
       name: apikey

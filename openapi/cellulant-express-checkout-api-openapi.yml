@@ -57,6 +57,33 @@ paths:
         4XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
+  examples:
+    ExpressCheckoutRequestExample:
+      summary: Create express checkout for KES 1500
+      value:
+        merchant_transaction_id: MX-2026-05-24-0001
+        service_code: TINGGSVC001
+        country_code: KE
+        currency_code: KES
+        request_amount: 1500
+        request_description: Order
+        account_number: ACC-42
+        msisdn: '254712345678'
+        customer_first_name: Wanjiru
+        customer_last_name: Mwangi
+        customer_email: wanjiru@example.co.ke
+        callback_url: https://merchant.example.co.ke/tingg/ipn
+        success_redirect_url: https://merchant.example.co.ke/checkout/success
+        fail_redirect_url: https://merchant.example.co.ke/checkout/failed
+        language_code: en
+    ExpressCheckoutResponseExample:
+      summary: Express checkout created
+      value:
+        status_code: 200
+        status_description: Successful
+        checkout_request_id: '99887766'
+        short_url: https://online.tingg.africa/checkout/Abc12
+        long_url: https://online.tingg.africa/checkout/express?accessKey=abcdef1234567890...
   schemas:
     ExpressCheckoutRequest:
       type: object
@@ -145,33 +172,6 @@ components:
                 type: string
               message:
                 type: string
-  examples:
-    ExpressCheckoutResponseExample:
-      summary: Express checkout created
-      value:
-        status_code: 200
-        status_description: Successful
-        checkout_request_id: '99887766'
-        short_url: https://online.tingg.africa/checkout/Abc12
-        long_url: https://online.tingg.africa/checkout/express?accessKey=abcdef1234567890...
-    ExpressCheckoutRequestExample:
-      summary: Create express checkout for KES 1500
-      value:
-        merchant_transaction_id: MX-2026-05-24-0001
-        service_code: TINGGSVC001
-        country_code: KE
-        currency_code: KES
-        request_amount: 1500
-        request_description: Order
-        account_number: ACC-42
-        msisdn: '254712345678'
-        customer_first_name: Wanjiru
-        customer_last_name: Mwangi
-        customer_email: wanjiru@example.co.ke
-        callback_url: https://merchant.example.co.ke/tingg/ipn
-        success_redirect_url: https://merchant.example.co.ke/checkout/success
-        fail_redirect_url: https://merchant.example.co.ke/checkout/failed
-        language_code: en
   parameters:
     ApiKey:
       name: apikey

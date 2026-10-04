@@ -73,33 +73,16 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ExtraData:
+    Error:
       type: object
-      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
       properties:
-        callbackUrl:
-          type: string
-          format: uri
-        pushToOriginator:
-          type: boolean
-        destinationBankCode:
-          type: string
-        destinationBankName:
-          type: string
-        destinationAccountName:
-          type: string
-        destinationAccountNo:
-          type: string
-    Credentials:
-      type: object
-      required:
-      - username
-      - password
-      properties:
-        username:
-          type: string
-        password:
-          type: string
+        authStatus:
+          type: object
+          properties:
+            authStatusCode:
+              type: integer
+            authStatusDescription:
+              type: string
     PaymentRequest:
       type: object
       required:
@@ -129,6 +112,23 @@ components:
               $ref: '#/components/schemas/Credentials'
             packet:
               $ref: '#/components/schemas/Packet'
+    ExtraData:
+      type: object
+      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
+      properties:
+        callbackUrl:
+          type: string
+          format: uri
+        pushToOriginator:
+          type: boolean
+        destinationBankCode:
+          type: string
+        destinationBankName:
+          type: string
+        destinationAccountName:
+          type: string
+        destinationAccountNo:
+          type: string
     PaymentResponse:
       type: object
       properties:
@@ -154,16 +154,16 @@ components:
               beepTransactionID:
                 type: integer
                 format: int64
-    Error:
+    Credentials:
       type: object
+      required:
+      - username
+      - password
       properties:
-        authStatus:
-          type: object
-          properties:
-            authStatusCode:
-              type: integer
-            authStatusDescription:
-              type: string
+        username:
+          type: string
+        password:
+          type: string
     Packet:
       type: object
       required:
@@ -213,7 +213,44 @@ components:
           type: string
         extraData:
           $ref: '#/components/schemas/ExtraData'
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   examples:
+    PendingAcknowledgementExample:
+      summary: Payout accepted, pending acknowledgement
+      value:
+        authStatus:
+          authStatusCode: 131
+          authStatusDescription: Authentication was successful
+        results:
+        - statusCode: 139
+          statusDescription: Payment pending acknowledgement
+          payerTransactionID: TXN-2026-05-24-0001
+          beepTransactionID: 9876543210
+    AirtimeVendExample:
+      summary: Airtime top-up
+      value:
+        function: BEEP.postPayment
+        countryCode: TZ
+        payload:
+          credentials:
+            username: sandboxuser
+            password: sandboxpassword!
+          packet:
+            serviceCode: AIRTIME-VODACOM-TZ
+            MSISDN: '255712345678'
+            accountNumber: '255712345678'
+            payerTransactionID: TXN-2026-05-24-0003
+            amount: 1000
+            datePaymentReceived: '2026-05-24 10:25:00'
+            currencyCode: TZ
+            countryCode: TZ
+            paymentMode: Mobile
     MobileMoneyPayoutExample:
       summary: Mobile money B2C payout to a Kenyan M-Pesa wallet
       value:
@@ -263,43 +300,6 @@ components:
               destinationBankName: GTBank
               destinationAccountName: Chinedu Okafor
               destinationAccountNo: 0123456789
-    AirtimeVendExample:
-      summary: Airtime top-up
-      value:
-        function: BEEP.postPayment
-        countryCode: TZ
-        payload:
-          credentials:
-            username: sandboxuser
-            password: sandboxpassword!
-          packet:
-            serviceCode: AIRTIME-VODACOM-TZ
-            MSISDN: '255712345678'
-            accountNumber: '255712345678'
-            payerTransactionID: TXN-2026-05-24-0003
-            amount: 1000
-            datePaymentReceived: '2026-05-24 10:25:00'
-            currencyCode: TZ
-            countryCode: TZ
-            paymentMode: Mobile
-    PendingAcknowledgementExample:
-      summary: Payout accepted, pending acknowledgement
-      value:
-        authStatus:
-          authStatusCode: 131
-          authStatusDescription: Authentication was successful
-        results:
-        - statusCode: 139
-          statusDescription: Payment pending acknowledgement
-          payerTransactionID: TXN-2026-05-24-0001
-          beepTransactionID: 9876543210
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     BasicAuth:
       type: http
