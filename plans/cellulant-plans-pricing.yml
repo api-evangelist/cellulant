@@ -1,3 +1,8 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (dated 2026-05-24 by the file itself), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
+generated: '2026-05-24'
 specification: API Commons Plans
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
@@ -49,7 +54,7 @@ plans:
       - name: Direct Card API with 3DS and 3DS-less flows
       - name: Dedicated Virtual Account (Nigeria)
       - name: WordPress/WooCommerce plugin
-      - name: SDKs: PHP, Python, Node.js, .NET, JavaScript
+      - name: 'SDKs: PHP, Python, Node.js, .NET, JavaScript'
   - id: cellulant-tingg-payouts
     name: Tingg Payouts
     type: usage-based
@@ -95,3 +100,36 @@ plans:
       - name: OTP, transactional, and standard SMS classes
       - name: Templated body with ${placeholder} parameters
       - name: Per-message delivery callbacks
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  units:
+  - message
+  - transaction
+  plans:
+  - name: Tingg Checkout
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - transaction
+    periods:
+    - per-use
+  - name: Tingg Payouts
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - transaction
+    periods:
+    - per-use
+  - name: Tingg Engage
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - message
+    periods:
+    - per-use
