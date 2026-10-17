@@ -110,6 +110,13 @@ components:
                 type: string
               message:
                 type: string
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     ApiKey:
       name: apikey
@@ -129,13 +136,6 @@ components:
         service_code: TINGGSVC001
         status_code: 183
         currency_code: KES
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     BearerAuth:
       type: http

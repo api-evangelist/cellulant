@@ -103,51 +103,52 @@ paths:
         4XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ChargeResponse:
+    Error:
       type: object
       properties:
         status_code:
           type: integer
         status_description:
           type: string
-        cpg_transaction_id:
-          type: string
-    StatusResponse:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+    ChargeRequest:
       type: object
+      required:
+      - checkout_request_id
+      - payment_option_code
+      - msisdn
       properties:
         checkout_request_id:
           type: string
         merchant_transaction_id:
           type: string
-        request_status_code:
+        service_code:
           type: string
-        request_status_description:
+        payment_option_code:
           type: string
-        request_amount:
+        msisdn:
+          type: string
+        amount:
           type: number
           format: double
-        payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Payment'
-        failed_payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Payment'
-    CustomCheckoutRequest:
-      allOf:
-      - $ref: '#/components/schemas/ExpressCheckoutRequest'
-      - type: object
-        properties:
-          payer_client_code:
-            type: string
-          payer_mode:
-            type: string
-            enum:
-            - MOBILE
-            - BANK
-            - CARD
+        currency_code:
+          type: string
     ExpressCheckoutRequest:
       type: object
       required:
@@ -204,15 +205,28 @@ components:
         language_code:
           type: string
           example: en
-    CustomCheckoutResponse:
+    StatusResponse:
       type: object
       properties:
-        status_code:
-          type: integer
         checkout_request_id:
           type: string
         merchant_transaction_id:
           type: string
+        request_status_code:
+          type: string
+        request_status_description:
+          type: string
+        request_amount:
+          type: number
+          format: double
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        failed_payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
     Payment:
       type: object
       properties:
@@ -235,43 +249,36 @@ components:
           type: string
         payment_status:
           type: string
-    Error:
+    CustomCheckoutRequest:
+      allOf:
+      - $ref: '#/components/schemas/ExpressCheckoutRequest'
+      - type: object
+        properties:
+          payer_client_code:
+            type: string
+          payer_mode:
+            type: string
+            enum:
+            - MOBILE
+            - BANK
+            - CARD
+    CustomCheckoutResponse:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        checkout_request_id:
+          type: string
+        merchant_transaction_id:
+          type: string
+    ChargeResponse:
       type: object
       properties:
         status_code:
           type: integer
         status_description:
           type: string
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
-    ChargeRequest:
-      type: object
-      required:
-      - checkout_request_id
-      - payment_option_code
-      - msisdn
-      properties:
-        checkout_request_id:
-          type: string
-        merchant_transaction_id:
-          type: string
-        service_code:
-          type: string
-        payment_option_code:
-          type: string
-        msisdn:
-          type: string
-        amount:
-          type: number
-          format: double
-        currency_code:
+        cpg_transaction_id:
           type: string
   parameters:
     ApiKey:
@@ -281,13 +288,6 @@ components:
       description: Merchant API key issued in the Tingg integration dashboard.
       schema:
         type: string
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     BearerAuth:
       type: http

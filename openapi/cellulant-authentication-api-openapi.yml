@@ -56,21 +56,17 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   schemas:
-    TokenRequest:
+    TokenResponse:
       type: object
-      required:
-      - grant_type
-      - client_id
-      - client_secret
       properties:
-        grant_type:
+        access_token:
           type: string
-          enum:
-          - client_credentials
-        client_id:
+        token_type:
           type: string
-        client_secret:
-          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Lifetime in seconds.
     Error:
       type: object
       properties:
@@ -87,30 +83,34 @@ components:
                 type: string
               message:
                 type: string
-    TokenResponse:
+    TokenRequest:
       type: object
+      required:
+      - grant_type
+      - client_id
+      - client_secret
       properties:
-        access_token:
+        grant_type:
           type: string
-        token_type:
+          enum:
+          - client_credentials
+        client_id:
           type: string
-          example: Bearer
-        expires_in:
-          type: integer
-          description: Lifetime in seconds.
+        client_secret:
+          type: string
   examples:
-    TokenRequestExample:
-      summary: OAuth token request
-      value:
-        grant_type: client_credentials
-        client_id: 1234567890abcdef
-        client_secret: clsec_abcdefghijklmnopqr
     TokenResponseExample:
       summary: OAuth token response
       value:
         access_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
         token_type: Bearer
         expires_in: 3599
+    TokenRequestExample:
+      summary: OAuth token request
+      value:
+        grant_type: client_credentials
+        client_id: 1234567890abcdef
+        client_secret: clsec_abcdefghijklmnopqr
   responses:
     ErrorResponse:
       description: Error response

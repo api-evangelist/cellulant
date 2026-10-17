@@ -73,16 +73,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        authStatus:
-          type: object
-          properties:
-            authStatusCode:
-              type: integer
-            authStatusDescription:
-              type: string
     PaymentRequest:
       type: object
       required:
@@ -112,48 +102,6 @@ components:
               $ref: '#/components/schemas/Credentials'
             packet:
               $ref: '#/components/schemas/Packet'
-    ExtraData:
-      type: object
-      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
-      properties:
-        callbackUrl:
-          type: string
-          format: uri
-        pushToOriginator:
-          type: boolean
-        destinationBankCode:
-          type: string
-        destinationBankName:
-          type: string
-        destinationAccountName:
-          type: string
-        destinationAccountNo:
-          type: string
-    PaymentResponse:
-      type: object
-      properties:
-        authStatus:
-          type: object
-          properties:
-            authStatusCode:
-              type: integer
-              example: 131
-            authStatusDescription:
-              type: string
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              statusCode:
-                type: integer
-              statusDescription:
-                type: string
-              payerTransactionID:
-                type: string
-              beepTransactionID:
-                type: integer
-                format: int64
     Credentials:
       type: object
       required:
@@ -213,25 +161,59 @@ components:
           type: string
         extraData:
           $ref: '#/components/schemas/ExtraData'
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  examples:
-    PendingAcknowledgementExample:
-      summary: Payout accepted, pending acknowledgement
-      value:
+    Error:
+      type: object
+      properties:
         authStatus:
-          authStatusCode: 131
-          authStatusDescription: Authentication was successful
+          type: object
+          properties:
+            authStatusCode:
+              type: integer
+            authStatusDescription:
+              type: string
+    PaymentResponse:
+      type: object
+      properties:
+        authStatus:
+          type: object
+          properties:
+            authStatusCode:
+              type: integer
+              example: 131
+            authStatusDescription:
+              type: string
         results:
-        - statusCode: 139
-          statusDescription: Payment pending acknowledgement
-          payerTransactionID: TXN-2026-05-24-0001
-          beepTransactionID: 9876543210
+          type: array
+          items:
+            type: object
+            properties:
+              statusCode:
+                type: integer
+              statusDescription:
+                type: string
+              payerTransactionID:
+                type: string
+              beepTransactionID:
+                type: integer
+                format: int64
+    ExtraData:
+      type: object
+      description: Optional channel-specific fields. Bank transfers require destinationBank* fields.
+      properties:
+        callbackUrl:
+          type: string
+          format: uri
+        pushToOriginator:
+          type: boolean
+        destinationBankCode:
+          type: string
+        destinationBankName:
+          type: string
+        destinationAccountName:
+          type: string
+        destinationAccountNo:
+          type: string
+  examples:
     AirtimeVendExample:
       summary: Airtime top-up
       value:
@@ -300,6 +282,24 @@ components:
               destinationBankName: GTBank
               destinationAccountName: Chinedu Okafor
               destinationAccountNo: 0123456789
+    PendingAcknowledgementExample:
+      summary: Payout accepted, pending acknowledgement
+      value:
+        authStatus:
+          authStatusCode: 131
+          authStatusDescription: Authentication was successful
+        results:
+        - statusCode: 139
+          statusDescription: Payment pending acknowledgement
+          payerTransactionID: TXN-2026-05-24-0001
+          beepTransactionID: 9876543210
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     BasicAuth:
       type: http
