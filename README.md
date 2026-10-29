@@ -1,4 +1,4 @@
-# Cellulant (cellulant)
+# Cellulant
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,166 +66,186 @@
 
 Cellulant is a pan-African payments platform headquartered in Nairobi, Kenya, operating across 35 African countries. Its flagship product Tingg is a single API that lets businesses collect online and offline payments, disburse to mobile money wallets and bank accounts, vend airtime and data, pay bills, and engage customers by SMS — interoperably across 350+ banks, mobile network operators, and card networks. Cellulant processes more than 4.5 million transactions per day for over 2,000 enterprise merchants and powers payments for ~220 million consumers. The Tingg platform exposes three primary developer-facing surfaces: Tingg Checkout 3.0 (Express, Custom and Direct Card), Tingg Payouts (the Beep global JSON endpoint), and Tingg Engage (transactional SMS). Cellulant ships official SDKs for PHP, Python, Node.js, .NET, JavaScript, plus a WooCommerce plugin.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/cellulant/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/cellulant/refs/heads/main/apis.yml)
+**Areas:** Payments · Mobile Money · Checkout · Payouts · Disbursements · Africa · Pan-African · Fintech · Bank Transfers · Cards · Airtime · Bill Payments
 
-## Scope
+## Cellulant on APIs.io
 
-- **Type:** Index
-- **Position:** Provider
-- **Access:** 3rd-Party
+Everything profiled for Cellulant is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/cellulant/](https://apis.io/providers/cellulant/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (6)
 
-- Payments
-- Mobile Money
-- Checkout
-- Payouts
-- Disbursement
-- Africa
-- Pan-African
-- Fintech
-- Bank Transfer
-- Cards
-- Airtime
-- Bill Payment
-- SMS
-- OTP
-- Tingg
+- [Cellulant Acknowledgement API](https://apis.io/apis/cellulant/cellulant-acknowledgement-api/) — Acknowledge successful or partial payments back to the platform.
+- [Cellulant Authentication API](https://apis.io/apis/cellulant/cellulant-authentication-api/) — OAuth 2.0 access token issuance for Tingg API calls.
+- [Cellulant Custom Checkout API](https://apis.io/apis/cellulant/cellulant-custom-checkout-api/) — Host-to-host checkout flow for merchant-controlled UX.
+- [Cellulant Engagement API](https://apis.io/apis/cellulant/cellulant-engagement-api/) — Outbound SMS notifications and OTPs.
+- [Cellulant Express Checkout API](https://apis.io/apis/cellulant/cellulant-express-checkout-api/) — Create hosted checkout sessions returning short and long URLs.
+- [Cellulant Payments API](https://apis.io/apis/cellulant/cellulant-payments-api/) — Post payouts, queries, validations, balances, and refunds.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-24
-- **Modified:** 2026-05-24
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Arazzo workflows (10)
 
-### Cellulant Tingg Checkout API
+Multi-step workflows that chain operations into a business task.
 
-Tingg Checkout 3.0 — a single integration to collect payments across 25+ African markets via Express Checkout (hosted/modal), Custom Checkout (host-to-host), and the Direct Card API (3DS / 3DS-less / 2D). Supports mobile money, cards, direct bank transfer, and 283+ payment methods.
+- [Cellulant Charge with OTP Notification](https://apis.io/arazzos/cellulant/cellulant-charge-with-otp-notification-workflow/)
+- [Cellulant Check Balance and Payout](https://apis.io/arazzos/cellulant/cellulant-check-balance-and-payout-workflow/)
+- [Cellulant Checkout, Poll, and Acknowledge](https://apis.io/arazzos/cellulant/cellulant-checkout-poll-and-acknowledge-workflow/)
+- [Cellulant Checkout with SMS Notification](https://apis.io/arazzos/cellulant/cellulant-checkout-with-sms-notification-workflow/)
+- [Cellulant Custom Checkout, Charge, and Poll](https://apis.io/arazzos/cellulant/cellulant-custom-checkout-charge-and-poll-workflow/)
+- [Cellulant Express Checkout and Poll Status](https://apis.io/arazzos/cellulant/cellulant-express-checkout-and-poll-status-workflow/)
+- [Cellulant Get Bill and Pay](https://apis.io/arazzos/cellulant/cellulant-get-bill-and-pay-workflow/)
+- [Cellulant Payout, Query, and Refund](https://apis.io/arazzos/cellulant/cellulant-payout-query-and-refund-workflow/)
+- [Cellulant Post Payout and Query Status](https://apis.io/arazzos/cellulant/cellulant-post-payout-and-query-status-workflow/)
+- [Cellulant Validate and Post Payout](https://apis.io/arazzos/cellulant/cellulant-validate-and-post-payout-workflow/)
 
-- **Human URL:** [https://docs.tingg.africa/docs/introduction](https://docs.tingg.africa/docs/introduction)
+#### Agentic access (1)
 
-#### Tags
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- Payments
-- Checkout
-- Mobile Money
-- Cards
-- Bank Transfer
-- Africa
+- [Cellulant Agentic Access](https://apis.io/agentic-access/cellulant/cellulant-agentic-access/)
 
-#### Properties
+#### JSON Schema (2)
 
-- [Documentation](https://docs.tingg.africa/docs/introduction)
-- [Documentation](https://docs.tingg.africa/docs/checkout-v3-express-checkout)
-- [Documentation](https://docs.tingg.africa/docs/checkout-v3-custom-checkout)
-- [Documentation](https://docs.tingg.africa/docs/checkout-v3-direct-card)
-- [Documentation](https://docs.tingg.africa/reference/acknowledge-payments)
-- [Webhook](https://docs.tingg.africa/reference/4-implement-webhook-via-callback-url-1)
-- [OpenAPI](openapi/cellulant-checkout-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cellulant-checkout-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cellulant-checkout-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/cellulant-checkout-request-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON-LD](json-ld/cellulant-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [Example](examples/cellulant-create-express-checkout-example.json)
+The data models the API reads and writes.
 
-### Cellulant Tingg Payouts API
+- [Tingg Express Checkout Request](https://apis.io/schemas/cellulant/cellulant-checkout-request/)
+- [Tingg Payout Packet](https://apis.io/schemas/cellulant/cellulant-payout-packet/)
 
-Tingg Payouts (Beep) — a single global JSON endpoint that dispatches postPayment, queryPayment, validateAccount, getBill, getBalance, and refundPayment functions for mobile-money B2C, bulk disbursement, cross-border bank transfers, airtime/data vending, and bill payments (DSTV, GOTV, electricity, water) across 35 African countries.
+#### JSON-LD (1)
 
-- **Human URL:** [https://docs.tingg.africa/docs/payouts-get-started](https://docs.tingg.africa/docs/payouts-get-started)
+Linked-data contexts for the provider's vocabulary.
 
-#### Tags
+- [Cellulant Context](https://apis.io/jsonld/cellulant/cellulant-context/)
 
-- Payments
-- Payouts
-- Disbursement
-- Mobile Money
-- Bank Transfer
-- Airtime
-- Africa
+#### Vocabulary (1)
 
-#### Properties
+The provider's domain terms, defined.
 
-- [Documentation](https://docs.tingg.africa/docs/payouts-get-started)
-- [Documentation](https://docs.tingg.africa/reference/postpayment)
-- [OpenAPI](openapi/cellulant-payouts-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cellulant-payouts-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cellulant-payouts-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [JSON Schema](json-schema/cellulant-payout-packet-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [Example](examples/cellulant-post-payment-example.json)
+- [Cellulant Vocabulary](https://apis.io/vocabularies/cellulant/cellulant-vocabulary/)
 
-### Cellulant Tingg Engage API
+#### Examples (3)
 
-Tingg Engage — single global entry point for transactional alerts. Queue OTP, transactional, and standard SMS with templated parameters and receive per-message delivery callbacks.
+Example requests and responses.
 
-- **Human URL:** [https://docs.tingg.africa/reference/engagement-service-api-v2](https://docs.tingg.africa/reference/engagement-service-api-v2)
+- [Cellulant Create Express Checkout Example](https://apis.io/examples/cellulant/cellulant-create-express-checkout-example/)
+- [Cellulant Post Payment Example](https://apis.io/examples/cellulant/cellulant-post-payment-example/)
+- [Cellulant Send Engagement Example](https://apis.io/examples/cellulant/cellulant-send-engagement-example/)
 
-#### Tags
+#### Collections (12)
 
-- SMS
-- OTP
-- Notifications
-- Engagement
-- Africa
+Postman and Open Collection request collections.
 
-#### Properties
+- [Cellulant Tingg Checkout Acknowledgement API](https://apis.io/collections/cellulant/open-cellulant-acknowledgement-api/)
+- [Cellulant Tingg Checkout Acknowledgement Authentication API](https://apis.io/collections/cellulant/open-cellulant-authentication-api/)
+- [Cellulant Tingg Checkout API](https://apis.io/collections/cellulant/open-cellulant-checkout-api/)
+- [Cellulant Tingg Checkout Acknowledgement Custom Checkout API](https://apis.io/collections/cellulant/open-cellulant-custom-checkout-api/)
+- [Cellulant Tingg Engage API](https://apis.io/collections/cellulant/open-cellulant-engage-api/)
+- [Cellulant Tingg Checkout Acknowledgement Engagement API](https://apis.io/collections/cellulant/open-cellulant-engagement-api/)
+- [Cellulant Tingg Checkout Acknowledgement Express Checkout API](https://apis.io/collections/cellulant/open-cellulant-express-checkout-api/)
+- [Cellulant Tingg Checkout Acknowledgement Payments API](https://apis.io/collections/cellulant/open-cellulant-payments-api/)
+- [Cellulant Tingg Payouts API](https://apis.io/collections/cellulant/open-cellulant-payouts-api/)
+- [Cellulant Tingg Checkout API](https://apis.io/collections/cellulant/postman-cellulant-checkout-api/)
+- [Cellulant Tingg Engage API](https://apis.io/collections/cellulant/postman-cellulant-engage-api/)
+- [Cellulant Tingg Payouts API](https://apis.io/collections/cellulant/postman-cellulant-payouts-api/)
 
-- [Documentation](https://docs.tingg.africa/reference/engagement-service-api-v2)
-- [Documentation](https://docs.tingg.africa/reference/engagement-apis)
-- [OpenAPI](openapi/cellulant-engage-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cellulant-engage-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cellulant-engage-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Example](examples/cellulant-send-engagement-example.json)
+#### Governance rules (2)
 
-## Common Properties
+Spectral rulesets for the provider's contracts.
 
-- [Arazzo Workflows](arazzo/) — [Arazzo Specification](https://spec.openapis.org/arazzo/latest.html)
+- [Cellulant — jsonschema rules](https://apis.io/rules/cellulant/cellulant-jsonschema-spectral-rules/)
+- [Cellulant API Rules](https://apis.io/rules/cellulant/cellulant-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Cellulant Authentication](https://apis.io/security/cellulant/cellulant-authentication/)
+- [Cellulant Domain Security](https://apis.io/security/cellulant/cellulant-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Cellulant Plans Pricing](https://apis.io/plans/cellulant/cellulant-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Cellulant Rate Limits](https://apis.io/rate-limits/cellulant/cellulant-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Cellulant Finops](https://apis.io/finops/cellulant/cellulant-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.cellulant.io)
-- [Product](https://tingg.africa)
-- [Portal](https://developer.tingg.africa)
 - [Documentation](https://docs.tingg.africa)
-- [Documentation](https://docs.tingg.africa/docs/introduction)
-- [Documentation](https://docs.tingg.africa/reference)
-- [Getting Started](https://docs.tingg.africa/docs/checkout-v3-getting-started)
-- [Sandbox](https://app.sandbox.tingg.africa)
-- [Sign Up](https://app.sandbox.tingg.africa)
+- [Getting started](https://docs.tingg.africa/docs/checkout-v3-getting-started)
 - [Pricing](https://tingg.africa/pricing/)
-- [Checkout](https://tingg.africa/checkout/)
-- [Payouts](https://tingg.africa/payouts/)
-- [Payment Gateway](https://tingg.africa/payment-gateway/)
-- [Payment Pages](https://tingg.africa/payment-pages/)
-- [Payment Infrastructure](https://www.cellulant.io/business-offerings/payment-infrastructure/)
-- [Blog](https://www.cellulant.io/category/blog/)
-- [Blog](https://tingg.africa/blog/)
-- [Press](https://www.cellulant.io/category/press-release/)
-- [GitHub Organization](https://github.com/CellulantCorp)
-- [SDK](https://packagist.org/packages/tingg/checkout)
-- [SDK](https://pypi.org/project/Tingg/)
-- [SDK](https://www.npmjs.com/package/@tingg-sdk/checkout)
-- [SDK](https://www.nuget.org/packages/Tingg.Checkout.Net)
-- [SDK](https://cdn.cellulant.africa/js/tingg-checkout-library.js)
-- [SDK](https://github.com/CellulantCorp/Express-Checkout-PHP-Client)
-- [SDK](https://github.com/CellulantCorp/express-checkout-python)
-- [SDK](https://github.com/CellulantCorp/express-checkout-nodejs)
-- [SDK](https://github.com/CellulantCorp/express-checkout-c-sharp)
-- [Plugin](https://github.com/CellulantCorp/cellulant-tingg-payment-gateway)
-- [Plugin](https://wordpress.org/plugins/cellulant-tingg-checkout/)
-- [Plugin](https://github.com/CellulantCorp/mula-wordpress-plugin)
-- [LinkedIn](https://www.linkedin.com/company/cellulant-corporation)
-- [Twitter](https://twitter.com/cellulant)
-- [YouTube](https://www.youtube.com/@CellulantCorp)
-- [Careers](https://www.cellulant.io/careers/)
-- [Contact](https://www.cellulant.io/contact-us/)
-- [Terms of Service](https://www.cellulant.io/terms/)
-- [Privacy Policy](https://www.cellulant.io/privacy-policy/)
-- [Plans](plans/cellulant-plans-pricing.yml)
-- [Rate Limits](rate-limits/cellulant-rate-limits.yml)
-- [Fin Ops](finops/cellulant-finops.yml)
-- [Vocabulary](vocabulary/cellulant-vocabulary.yml)
-- [Spectral Rules](rules/cellulant-rules.yml)
+- [Blog](https://www.cellulant.io/news-room/)
+- [Terms of service](https://www.cellulant.io/terms/)
+- [Privacy policy](https://www.cellulant.io/privacy-policy/)
+- [GitHub](https://github.com/CellulantCorp)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 50.1** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 63.4 |
+| Contract quality | 65.4 |
+| Contract governance | 27.3 |
+| Operational transparency | 14.5 |
+| Developer ergonomics | 52.4 |
+| Access clarity | 60.5 |
+
+**Agent readiness 28.4** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | unknown |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 22.3** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/cellulant/](https://apis.io/providers/cellulant/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Cellulant: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/cellulant/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
